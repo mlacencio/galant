@@ -30,8 +30,9 @@ public class GalantPlugin extends CytoscapePlugin {
 
 	public GalantPlugin() {
 		
-		Loadlibs.loadMyLibs();
+		Loadlibs.copyJar();
 		
+		Loadlibs.loadMyLibs();
 		// Initializing variables
 		
 		jMenuViaComplex = new JMenu("Galant");

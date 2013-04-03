@@ -9,13 +9,12 @@ public class Teste {
 
 public Teste(){
 
-	Loadlibs.loadMyLibs();
+	Loadlibs.copyJar();
 			
 }
 
 	public static void main(String[] args) {
 			Teste t =new Teste();
-			
 	}
 
 }

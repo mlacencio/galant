@@ -38,12 +38,14 @@ import org.jzy3d.plot3d.rendering.legends.colorbars.ColorbarLegend;
 import org.jzy3d.plot3d.rendering.view.View;
 import org.jzy3d.plot3d.rendering.view.modes.ViewPositionMode;
 
+import flanagan.analysis.SurfaceSmooth;
+
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Spline;
 import br.unesp.lbbc.model.MapperGaussianImp;
 import br.unesp.lbbc.util.Util;
-import flanagan.analysis.SurfaceSmooth;
+//import flanagan.analysis.SurfaceSmooth;
 
 /**
  * To draw the surface it's needed to know what attribute and function
@@ -270,14 +272,11 @@ public class SurfacePanel extends JPanel {
 		return chart;
 	}
 	
-	public static ChartMouseController getMouseController(){
-		return mouseController;
-	}
+	
 
 	@Override
 	protected void finalize() throws Throwable {
 		// TODO Auto-generated method stub
-		getChart().removeController(getMouseController());
 		this.finalize();
 		super.finalize();
 		

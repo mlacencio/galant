@@ -30,6 +30,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import br.unesp.lbbc.util.Loadlibs;
+
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -84,6 +86,7 @@ public class InitAttributeFrame extends JFrame {
 	}
 
 	private void initComponents(){
+		Loadlibs.loadMyLibs();
 		
 		toolBar = new JToolBar();
 		contentPane.add(toolBar, BorderLayout.NORTH);
@@ -189,6 +192,7 @@ public class InitAttributeFrame extends JFrame {
 	}
 	
 	private void initListeners() {
+		
 		btnDraw.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
