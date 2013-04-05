@@ -91,13 +91,13 @@ public class SurfacePanel extends JPanel {
 		HashMap<String, double[]> map;
 		
 		if (at2==null){
-			map = mapping.getCompleteHash(at1);
+			map = mapping.getCompleteHash(at1,log);
 			}
 		else{
 			ExpControl expControl = new ExpControl();
 			
 			if (log) {
-				map = expControl.calculeLog(at1, at2);
+				map = expControl.calculeLog(at1, at2,log);
 			}
 			else {
 				map = expControl.calcule(at1, at2);
@@ -188,11 +188,11 @@ public class SurfacePanel extends JPanel {
 		HashMap<String, double[]> map;
 		
 		if (at2==null){
-			map = mapping.getCompleteHash(at1);}
+			map = mapping.getCompleteHash(at1,log);}
 		else{
 			ExpControl expControl = new ExpControl();
 			if (log) {
-				map = expControl.calculeLog(at1, at2);
+				map = expControl.calculeLog(at1, at2,log);
 			}
 			else {
 				map = expControl.calcule(at1, at2);

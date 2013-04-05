@@ -6,13 +6,14 @@ public class ExpControl {
 
 	Mapping mapping = new Mapping();
 
+	
 	/**
 	 * It takes the z-exp and the z-control, calculate alpha = (z-exp) / z-exp  -  z-control).
 	 *  Returns a HashMap
 	 * */
 	public HashMap<String,double[]> calcule(String exp, String control) {
-		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp);
-		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control);
+		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp,false);
+		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control,false);
 		
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 
@@ -26,9 +27,9 @@ public class ExpControl {
 		return newMap;
 	}
 	
-	public HashMap<String,double[]> calculeLog(String exp, String control) {
-		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp);
-		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control);
+	public HashMap<String,double[]> calculeLog(String exp, String control, boolean isLog) {
+		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp,isLog);
+		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control,isLog);
 
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 

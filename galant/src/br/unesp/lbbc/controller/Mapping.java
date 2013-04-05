@@ -101,16 +101,29 @@ public class Mapping {
 	public HashMap<String, double[]> getCurrentCoordinates() {
 
 		HashMap<String, double[]> coordMap = new HashMap<String, double[]>();
+		
+		
 		List<CyNode> nodeList = Cytoscape.getCyNodesList();
 
 		for (CyNode cynode : nodeList) {
 			String gene = cynode.getIdentifier();
-			NodeView nodeView = net.getNodeView(cynode);
-			double x = nodeView.getXPosition();
-			double y = nodeView.getYPosition();
-			//estava saindo de ponta cabeca, entao coloquei um menos no y
-			double coordinates[] = { x, -y };
-			coordMap.put(gene, coordinates);
+			
+			
+			try {
+				NodeView nodeView = net.getNodeView(cynode);
+				double x = nodeView.getXPosition();
+				double y = nodeView.getYPosition();
+				//estava saindo de ponta cabeca, entao coloquei um menos no y
+				double coordinates[] = { x, -y };
+				coordMap.put(gene, coordinates);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null,"The network has changed. You need to load it again.","Network error",JOptionPane.ERROR_MESSAGE );
+				e.printStackTrace();
+				break;
+				
+			}
+
+		
 		}
 
 		return coordMap;
@@ -118,7 +131,7 @@ public class Mapping {
 
 	
 	// Get complete hash map for one attribute
-	public HashMap<String, double[]> getCompleteHash(String attribute) {
+	public HashMap<String, double[]> getCompleteHash(String attribute,Boolean isLog) {
 
 		HashMap<String, Double> att = new HashMap<String, Double>();
 
@@ -139,8 +152,15 @@ public class Mapping {
 						if (terceiraColuna != null){
 						double xyz[] = { coor.get(key)[0], coor.get(key)[1], terceiraColuna };
 						completHash.put(key, xyz);}
-						else {double xyz[] = { coor.get(key)[0], coor.get(key)[1], 0 };
+						else {
+							
+							if (!isLog){
+							double xyz[] = { coor.get(key)[0], coor.get(key)[1], 0 };
 						completHash.put(key, xyz);}
+							else{double xyz[] = { coor.get(key)[0], coor.get(key)[1], 1 };
+							completHash.put(key, xyz);}
+						
+						}
 				}	
 			
 		

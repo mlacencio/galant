@@ -86,7 +86,7 @@ public class InitAttributeFrame extends JFrame {
 	}
 
 	private void initComponents(){
-		Loadlibs.loadMyLibs();
+		//Loadlibs.loadMyLibs();
 		
 		toolBar = new JToolBar();
 		contentPane.add(toolBar, BorderLayout.NORTH);

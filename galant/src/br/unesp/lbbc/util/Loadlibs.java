@@ -3,27 +3,12 @@
 package br.unesp.lbbc.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
-
-import com.install4j.runtime.installer.platform.win32.FolderInfo;
-import com.lowagie.text.pdf.codec.Base64.OutputStream;
 
 /**
  *
@@ -40,11 +25,10 @@ public class Loadlibs {
        
     public static void loadMyLibs(){
     	
-    //	String fileName = System.getProperty("user.home");
+    /*	String fileName = System.getProperty("user.home");
     //	File folderCytoscape = new File(fileName+"//.cytoscape");
     	
-    	String fileName = System.getProperty("user.dir");
-        File folderCytoscape = new File(fileName+"//plugins");
+    	
         	
     	
     	//verifica se as libs ja estao salvas
@@ -82,7 +66,10 @@ public class Loadlibs {
         URL resourceUrl = URL.class.getResource(address);
        
        File folder=null;
-     /*  try {
+    
+       //tentativa de gravar as libs do jar para uma pasta do user.
+       
+       /*  try {
 			folder = new File(resourceUrl.toURI());
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -106,8 +93,11 @@ public class Loadlibs {
        
     	*/
     	
-    	String setPath = System.getProperty("java.library.path");
+    	//ADD THE PLUGINS FOLDER TO THE PATH
     	
+    	String fileName = System.getProperty("user.dir");
+        File folderCytoscape = new File(fileName+"//plugins");
+    	String setPath = System.getProperty("java.library.path");
     	setPath = setPath + System.getProperty("path.separator")+folderCytoscape;
     	System.setProperty("java.library.path", setPath );
         System.out.println(setPath);

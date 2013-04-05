@@ -45,11 +45,11 @@ public class Util {
 		for (String key : map.keySet()) {
 			double newX = ((map.get(key)[0]) - xmin) / (xmax - xmin);
 			double newY = ((map.get(key)[1]) - ymin) / (ymax - ymin);
-			double newZ = ((map.get(key)[2]) - zmin) / (zmax - zmin);
-			// double[] newCoord = { newX, newY, newZ };
+			double newZ = 1+(((map.get(key)[2]) - zmin) / (zmax - zmin));
+			double[] newCoord = { newX, newY, newZ };
 
-			// use this line to not normalize the attribute
-			double[] newCoord = { newX, newY, map.get(key)[2] };
+			// use this line to NOT normalize the attribute
+			//double[] newCoord = { newX, newY, map.get(key)[2] };
 
 			newMap.put(key, newCoord);
 
@@ -77,7 +77,7 @@ public class Util {
 		}
 		for (int k = 0; k < data.length; k++) {
 			for (int l = 0; l < data.length; l++) {
-				data[k][l] = ((data[k][l]) - min) / (max - min);
+				data[k][l] = (((data[k][l]) - min) / (max - min))+1;
 			}
 		}
 

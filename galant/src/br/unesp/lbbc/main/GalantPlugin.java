@@ -30,7 +30,7 @@ public class GalantPlugin extends CytoscapePlugin {
 
 	public GalantPlugin() {
 		
-		Loadlibs.copyJar();
+		//Loadlibs.copyJar();
 		
 		Loadlibs.loadMyLibs();
 		// Initializing variables
