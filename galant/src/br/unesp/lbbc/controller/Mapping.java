@@ -23,6 +23,7 @@ public class Mapping {
 	public static int TYPE_FLOATING = 2;
 	public static int TYPE_INTEGER = 3;
 
+	
 	/**
 	 * Class responsible for converting the type of attributes in double and
 	 * generate one map of key-String and value-double[], where double[] is x,y,z coordinates
@@ -45,7 +46,9 @@ public class Mapping {
 		
 			
 			try {
+				
 				value = cyNodeAttrs.getDoubleAttribute(node.getIdentifier(),attName);
+				
 			} catch (NullPointerException e) {
 				JOptionPane.showMessageDialog(null,"Missing Attribute for Node: "+node+"\n it will be considered zero");
 				e.printStackTrace();
@@ -117,9 +120,9 @@ public class Mapping {
 				double coordinates[] = { x, -y };
 				coordMap.put(gene, coordinates);
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null,"The network has changed. You need to load it again.","Network error",JOptionPane.ERROR_MESSAGE );
-				e.printStackTrace();
-				break;
+				//JOptionPane.showMessageDialog(null,"The network has changed. You need to load it again.","Network error",JOptionPane.ERROR_MESSAGE );
+				//e.printStackTrace();
+				
 				
 			}
 

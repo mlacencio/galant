@@ -65,6 +65,7 @@ public class InitAttributeFrame extends JFrame {
 	private JPanel panelSurface;
 	private JLabel lblSmoothness;
 	private JTextField tfSmooth;
+	private JCheckBox chckbxLog;
 
 		/**
 	 * Create the frame.
@@ -169,6 +170,9 @@ public class InitAttributeFrame extends JFrame {
 		
 		checkBox2D = new JCheckBox("2D");
 		checkBox2D.setSelected(true);
+		
+		chckbxLog = new JCheckBox("log");
+		panelFunctions.add(chckbxLog, "2, 8");
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
 		btnDraw = new JButton("DRAW");
@@ -202,10 +206,10 @@ public class InitAttributeFrame extends JFrame {
 				int smooth = Integer.parseInt(tfSmooth.getText());
 				
 				if (function=="Gaussian"){
-					sp.drawGaussian(atts,null, checkBox2D.isSelected(), tfGaussian.getText(),true);
+					sp.drawGaussian(atts,null, checkBox2D.isSelected(), tfGaussian.getText(),chckbxLog.isSelected());
 				}
 				else if (function=="Custom"){
-					sp.drawCustom(atts,null, checkBox2D.isSelected(), Float.parseFloat(tfCustom.getText()),smooth,true);
+					sp.drawCustom(atts,null, checkBox2D.isSelected(), Float.parseFloat(tfCustom.getText()),smooth,chckbxLog.isSelected());
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");

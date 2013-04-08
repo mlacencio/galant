@@ -13,8 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jzy3d.chart.Chart;
-import org.jzy3d.chart.controllers.keyboard.ChartKeyController;
-import org.jzy3d.chart.controllers.mouse.ChartMouseController;
 import org.jzy3d.colors.Color;
 import org.jzy3d.colors.ColorMapper;
 import org.jzy3d.colors.colormaps.ColorMapRainbow;
@@ -45,7 +43,7 @@ import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Spline;
 import br.unesp.lbbc.model.MapperGaussianImp;
 import br.unesp.lbbc.util.Util;
-//import flanagan.analysis.SurfaceSmooth;
+
 
 /**
  * To draw the surface it's needed to know what attribute and function
@@ -59,7 +57,6 @@ public class SurfacePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Mapping mapping;
 	private static Chart chart;
-	private static ChartMouseController mouseController;
 
 	public static int TYPE_BOOLEAN = 1;
 	public static int TYPE_FLOATING = 2;
@@ -75,8 +72,8 @@ public class SurfacePanel extends JPanel {
 		Settings.getInstance().setHardwareAccelerated(true);
 		setLayout(new BorderLayout());
 		chart = new Chart("awt");
-		chart.addController(new ChartKeyController());
-		chart.addController(new ChartMouseController());
+	//	chart.addController(new ChartKeyController());
+	//	chart.addController(new ChartMouseController());
 		mapping = new Mapping();
 		
 		
@@ -118,6 +115,8 @@ public class SurfacePanel extends JPanel {
 		
 		
 		final Shape surface = (Shape) Builder.buildOrthonormal(new OrthonormalGrid(range, steps, range, steps), gaussianMapper);
+		
+		
 		
 		surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface
 				.getBounds().getZmin(), surface.getBounds().getZmax(),
@@ -211,11 +210,15 @@ public class SurfacePanel extends JPanel {
 		
 		if (at1==(at2)) {//se atributos sao iguais nao suaviza
 			distDataProp = (zmat);
+			//
 		}
+		
 		else{
 			SurfaceSmooth smooth = new SurfaceSmooth(zmat);
 			distDataProp = smooth.movingAverage(smoothness);
 			distDataProp = Util.normalizeDouble(distDataProp);
+			
+			
 		}
 		
 		List<Polygon> polygons = new ArrayList<Polygon>();
