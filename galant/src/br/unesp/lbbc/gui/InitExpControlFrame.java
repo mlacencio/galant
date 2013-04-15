@@ -232,7 +232,7 @@ public class InitExpControlFrame extends JFrame {
 					sp.drawGaussian(at1,at2, checkBox2D.isSelected(), tfGaussian.getText(),chckbxLog.isSelected());
 				}
 				else if (function=="Custom"){
-					sp.drawCustom(at1,at2, checkBox2D.isSelected(), Float.parseFloat(tfCustom.getText()),smooth,chckbxLog.isSelected());
+					sp.drawCustom(at1,at2, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected());
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");

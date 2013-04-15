@@ -209,7 +209,14 @@ public class InitAttributeFrame extends JFrame {
 					sp.drawGaussian(atts,null, checkBox2D.isSelected(), tfGaussian.getText(),chckbxLog.isSelected());
 				}
 				else if (function=="Custom"){
-					sp.drawCustom(atts,null, checkBox2D.isSelected(), Float.parseFloat(tfCustom.getText()),smooth,chckbxLog.isSelected());
+					
+					try {
+						sp.drawCustom(atts,null, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected());
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again");
+						//e1.printStackTrace();
+					}
+				
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");

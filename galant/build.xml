@@ -5,7 +5,6 @@
     <target name="create_run_jar">
         <jar destfile="D:/programas/Cytoscape_v2.8.3/plugins/galant.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="cytoscape.CyMain"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/bin"/>
