@@ -45,6 +45,7 @@ import flanagan.analysis.SurfaceSmooth;
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Spline;
+import br.unesp.lbbc.model.MapperCustom;
 import br.unesp.lbbc.model.MapperGaussianImp;
 import br.unesp.lbbc.model.SurfaceMapper;
 import br.unesp.lbbc.util.Util;
@@ -104,7 +105,8 @@ public class SurfacePanel extends JPanel {
 		Mapper gaussianMapper = new MapperGaussianImp(map,resolution);
 		Range range = new Range(-0.1, 1.1);
 		
-		int steps = 80;
+		double p = Double.parseDouble(resolution);
+		int steps = (int)p-1;
 		
 		
 
@@ -181,7 +183,29 @@ public class SurfacePanel extends JPanel {
 	 * if there is only one attribute, the control (at2) is passed as null
 	 * */
 	
+	
 	public void drawCustom(String at1,String at2, boolean isSelected2D,int res,int smooth,boolean log) {
+		
+		Mapping map = new Mapping();
+		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
+		Spline sp = new Spline();
+		double[][] matrix = sp.geraMatriz(hash, res);
+		Mapper mapper = new MapperCustom(matrix);
+		Range range = new Range(0, res-1);
+		int steps = smooth;
+		
+		final Shape surface = (Shape) Builder.buildOrthonormal(new OrthonormalGrid(range, steps, range, steps), mapper);
+		
+		surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), 0, 1));
+		surface.setFaceDisplayed(true);
+		surface.setWireframeDisplayed(false);	
+		chart.getScene().getGraph().add(surface);
+		this.add((Component) chart.getCanvas(), BorderLayout.CENTER);		
+		chart.setViewMode(ViewPositionMode.TOP);
+		
+	}
+	
+	public void drawCustomNey(String at1,String at2, boolean isSelected2D,int res,int smooth,boolean log) { 
 
 		
 		Mapping map = new Mapping();

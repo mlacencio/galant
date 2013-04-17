@@ -56,7 +56,7 @@ public class TestaInterpola extends JPanel {
 		
 		
 		Spline sp = new Spline();
-		List<Coord3d> list = sp.generateSpline(originalPoints,2, 1);
+		List<Coord3d> list;// = sp.generateSpline(originalPoints,2, 1);
 	
 		
 		/*List<Coord3d> list = new ArrayList<Coord3d>();

@@ -213,7 +213,7 @@ public class InitAttributeFrame extends JFrame {
 					try {
 						sp.drawCustom(atts,null, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected());
 					} catch (NullPointerException e1) {
-						JOptionPane.showMessageDialog(null,"Select attribute and draw again");
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
 						//e1.printStackTrace();
 					}
 				

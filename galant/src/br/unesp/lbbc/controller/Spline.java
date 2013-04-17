@@ -24,6 +24,46 @@ public class Spline {
 
 	}
 
+public double[][] geraMatriz(HashMap<String, double[]> originalPoints, int res){
+				
+			double cellSize = 1/(double)res;
+			double[] x = new double[res];
+			double[] y = new double[res];
+			double[][]zmat = new double[res][res];
+			
+			//preenche x e y
+			for (int i=0;i<res;i++){
+				x[i]=i*cellSize;
+				y[i]=i*cellSize;
+			}
+			
+			//preenche zmat
+			for (int i=0;i<res;i++){
+				for (int j=0;j<res;j++){
+					zmat[i][j]=getCellAverage(originalPoints,x[i],y[j],cellSize);
+				}
+			}		
+			
+			//adicionar um ponto em cada extremo sendo z igual a zero
+			double[] xm1 = new double[res+2]; //adiciona um zero de cada lado + 2
+			double[] ym1 = new double[res+2]; 
+			//preenche novos x e y
+					for (int i=0;i<res+2;i++){
+						xm1[i]=i*cellSize/res;
+						ym1[i]=i*cellSize/res;
+					}
+					
+			//preenche novo zmat baseada na antiga - comeca 1 depois e para 1 antes - o resto fica zero
+			double[][] nzmat = new double[res+2][res+2];
+					for (int i=1;i<res+1;i++){
+						for (int j=1;j<res+1;j++){
+							nzmat[i][j]=zmat[i-1][j-1];
+						}
+					}		
+			return zmat;
+}
+	
+	
 public double[][] geraMatrizNey(int res, double [][] original){
 		
 		int size=res;
@@ -34,7 +74,8 @@ public double[][] geraMatrizNey(int res, double [][] original){
 		double[] dist = new double[nvertices];           // tem de estar entre [0,1] x [0,1]
 		
 		//preenche as arrays
-		for (int i=0;i<size;i++){
+		int np = original.length;
+		for (int i=0;i<np;i++){
 			coords[i][0]=original[i][0];
 			coords[i][1]=original[i][1];
 			cond[i]=original[i][2];
@@ -44,7 +85,7 @@ public double[][] geraMatrizNey(int res, double [][] original){
 		for (int i=0;i<size;i++){     
 		        for (int j=0;i<size;i++){
 		        	double sumdist = 0;
-		             for (int k=0; k<size; k++){
+		             for (int k=0; k<np; k++){
 		            	 	double a = coords[k][0]*size-i;
 		            	 	double b = coords[k][1]*size-j;
 		            	 
@@ -52,8 +93,9 @@ public double[][] geraMatrizNey(int res, double [][] original){
 		            	 	sumdist+=dist[k];
 		             }
 		            
-		             for (int k=0; k<size; k++){
-		            	 matrix[i][j]+=cond[k]/dist[k];
+		             for (int k=0; k<np; k++){
+		            	// matrix[i][j]+=cond[k]/dist[k];
+		            	 matrix[i][j]+=cond[k]/(0.000001+dist[k]);
 		             }
 		             matrix[i][j]=matrix[i][j]/sumdist;
 		        }
@@ -62,7 +104,7 @@ public double[][] geraMatrizNey(int res, double [][] original){
 		return matrix;
 	}
 	
-	public double[][] generateSpline(HashMap<String, double[]> originalPoints, int res, int smooth){
+public double[][] generateSpline(HashMap<String, double[]> originalPoints, int res, int smooth){
 	//public List<Coord3d> generateSpline(HashMap<String, double[]> originalPoints, int res, int smooth){
 			
 		double cellSize = 1/(double)res;
