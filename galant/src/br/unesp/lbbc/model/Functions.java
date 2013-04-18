@@ -73,11 +73,13 @@ public class Functions {
 	//menor smooth possivel 2
 	public List<Coord3d> getInterpolatedArray(double map[][], int smooth){
 	
+	List<Coord3d> coords = new ArrayList<Coord3d>();
 	int res = map.length;
 	int nres = res*(smooth+1)-smooth; //nova resolucao
 	double[] eixoArray = new double[res];
 	double[] newEixoArray = new double[nres];
-	double[][] newmat = new double[nres][nres];
+	double[][] newmat1 = new double[res][nres]; //essa nova matriz eh interpolada em x mas nao em y aidna
+	//a ideia eh pegar essa matriz, transpor e fazer a interpolacao.
 	
 	double[][] mapT = transpose(map);   //matrix transposta
 	
@@ -90,19 +92,17 @@ public class Functions {
 	}
 	
 			
-	List<Coord3d> coords = new ArrayList<Coord3d>();
 	
 	//aqui gera uma array que sera usa da interpolacao do y
 	for (int i=0; i<res;i++){
 		double[] xzarray = map[i];
-		double[] newXZarray = new double[nres];
 		
 		SplineInterpolator spix = new SplineInterpolator();
 		PolynomialSplineFunction psfx = spix.interpolate(eixoArray,xzarray);
 		//for para calcular nova arrayx
-		for (int j = 0; j < newEixoArray.length; j++) {
+		for (int j = 0; j < nres; j++) {
 			try {
-				newmat[i][j]=psfx.value(j);
+				newmat1[i][j]=psfx.value(j/(smooth+1));
 			} catch (ArgumentOutsideDomainException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -110,8 +110,36 @@ public class Functions {
 		}
 	}
 	
-		int daumtempo = 1;
-		return null;
+	int daumtempo1 = 2;
+	double[][] newmat2 = transpose(newmat1);
+	double[][] newmat3ref = new double[nres][nres];
+	for (int i=0; i<nres;i++){
+		double[] yzarray = newmat2[i];
+		
+		SplineInterpolator spix = new SplineInterpolator();
+		PolynomialSplineFunction psfx = spix.interpolate(eixoArray,yzarray);
+		//for para calcular nova array
+		for (int j = 0; j < nres; j++) {
+			try {
+				newmat3ref[i][j]=psfx.value(j/(smooth+1));
+			} catch (ArgumentOutsideDomainException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	double[][] matresult = transpose(newmat3ref);
+	
+	for (int i = 0; i < matresult.length; i++) {
+		for (int j = 0; j < matresult.length; j++) {
+			Coord3d c = new Coord3d(i, j, matresult[i][j]);
+			coords.add(c);
+		}
+	}
+	
+		
+		return coords;
 	
 	}
 	
@@ -126,9 +154,9 @@ public class Functions {
 	
 	public double[][] transpose(double[][] mat){
 		
-		double[][] tmat = new double[mat.length][mat.length];
-		for (int i = 0; i < mat.length; i++) {
-			for (int j = 0; j < tmat.length; j++) {
+		double[][] tmat = new double[mat[0].length][mat.length];
+		for (int i = 0; i < tmat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
 				tmat[i][j] = mat[j][i];
 			}
 		}

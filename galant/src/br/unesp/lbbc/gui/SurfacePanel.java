@@ -45,6 +45,7 @@ import flanagan.analysis.SurfaceSmooth;
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Spline;
+import br.unesp.lbbc.model.Functions;
 import br.unesp.lbbc.model.MapperCustom;
 import br.unesp.lbbc.model.MapperGaussianImp;
 import br.unesp.lbbc.model.SurfaceMapper;
@@ -190,11 +191,11 @@ public class SurfacePanel extends JPanel {
 		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
 		Spline sp = new Spline();
 		double[][] matrix = sp.geraMatriz(hash, res);
-		Mapper mapper = new MapperCustom(matrix);
-		Range range = new Range(0, res-1);
-		int steps = smooth;
 		
-		final Shape surface = (Shape) Builder.buildOrthonormal(new OrthonormalGrid(range, steps, range, steps), mapper);
+		Functions f = new Functions();
+		
+		List<Coord3d> coordinates= f.getInterpolatedArray(matrix, smooth); 
+		final Shape surface = Builder.buildDelaunay(coordinates);
 		
 		surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), 0, 1));
 		surface.setFaceDisplayed(true);
