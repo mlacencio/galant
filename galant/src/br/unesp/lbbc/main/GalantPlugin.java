@@ -11,7 +11,6 @@ import br.unesp.lbbc.gui.AboutDialog;
 import br.unesp.lbbc.gui.HelpWindow;
 import br.unesp.lbbc.gui.InitAttributeFrame;
 import br.unesp.lbbc.gui.InitExpControlFrame;
-import br.unesp.lbbc.util.Loadlibs;
 import cytoscape.Cytoscape;
 import cytoscape.plugin.CytoscapePlugin;
 
@@ -29,11 +28,6 @@ public class GalantPlugin extends CytoscapePlugin {
 
 
 	public GalantPlugin() {
-		
-		//Loadlibs.copyJar();
-		
-		Loadlibs.loadMyLibs();
-		// Initializing variables
 		
 		jMenuViaComplex = new JMenu("Galant");
 		

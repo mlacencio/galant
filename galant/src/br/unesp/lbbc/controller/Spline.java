@@ -1,17 +1,10 @@
 package br.unesp.lbbc.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.math.ArgumentOutsideDomainException;
-import org.apache.commons.math.analysis.interpolation.SplineInterpolator;
-import org.apache.commons.math.analysis.polynomials.PolynomialSplineFunction;
-import org.jzy3d.maths.Array;
-import org.jzy3d.maths.Coord2d;
-import org.jzy3d.maths.Coord3d;
-
-import flanagan.interpolation.CubicSplineFast;
 
 /** Get one HasMap - calculate others points (spline) and then return a new map */
 
@@ -23,79 +16,68 @@ public class Spline {
 	public Spline() {
 
 	}
-
-public double[][] geraMatriz(HashMap<String, double[]> originalPoints, int res){
-				
-			double cellSize = 1/(double)res;
-			double[] x = new double[res];
-			double[] y = new double[res];
-			double[][]zmat = new double[res][res];
-			
-			//preenche x e y
-			for (int i=0;i<res;i++){
-				x[i]=i*cellSize;
-				y[i]=i*cellSize;
-			}
-			
-			//preenche zmat
-			for (int i=0;i<res;i++){
-				for (int j=0;j<res;j++){
-					zmat[i][j]=getCellAverage(originalPoints,x[i],y[j],cellSize);
-				}
-			}		
-			
-			//adicionar um ponto em cada extremo sendo z igual a zero
-			double[] xm1 = new double[res+2]; //adiciona um zero de cada lado + 2
-			double[] ym1 = new double[res+2]; 
-			//preenche novos x e y
-					for (int i=0;i<res+2;i++){
-						xm1[i]=i*cellSize/res;
-						ym1[i]=i*cellSize/res;
-					}
-					
-			//preenche novo zmat baseada na antiga - comeca 1 depois e para 1 antes - o resto fica zero
-			double[][] nzmat = new double[res+2][res+2];
-					for (int i=1;i<res+1;i++){
-						for (int j=1;j<res+1;j++){
-							nzmat[i][j]=zmat[i-1][j-1];
-						}
-					}		
-			return zmat;
-}
 	
 	
-public double[][] geraMatrizNey(int res, double [][] original){
+public double[][] geraMatrizNeychoks(int res, HashMap<String, double[]> original,double smooth,boolean boollog){
+	
+			
 		
-		int size=res;
-		int nvertices = original.length;  //number of original points
+		int nvertices = original.size();  //number of original points
 		double[] cond = new double[nvertices]; // um vetor que indica a expressao de cada nodo
-		double[][] matrix =new double[size][size]; // a matrix que devera ser impressa 
+		double[][] matrix =new double[res][res]; // a matrix que devera ser impressa 
 		double[][] coords = new double[nvertices][2]; // a posicao de cada um dos vertices (deve sair do cytoscape)
 		double[] dist = new double[nvertices];           // tem de estar entre [0,1] x [0,1]
 		
-		//preenche as arrays
-		int np = original.length;
-		for (int i=0;i<np;i++){
-			coords[i][0]=original[i][0];
-			coords[i][1]=original[i][1];
-			cond[i]=original[i][2];
-		}
+		    //iterate through HashMap values iterator
+		 Collection c = original.keySet();
+		 Iterator itr = c.iterator();
+		 
+		 for (int i=0;i<res;i++){     
+		        for (int j=0;j<res;j++){
+		        	matrix[i][j]=0;
+		        }
+		 }
+		  
+		  
+		  int kk= 0;
+		    while(itr.hasNext()){
+		    	double[] value = original.get(itr.next());
+		    	coords[kk][0]= value[0];
+				coords[kk][1]=1-value[1];
+				coords[kk][0]=0.1+0.8*coords[kk][0];
+				coords[kk][1]=0.1+0.8*coords[kk][1];
+				if(boollog){
+					if(value[2]==0){
+						cond[kk]=0;
+						//System.out.println(cond[kk]);
+					}else{
+						cond[kk]=Math.log(value[2])/Math.log(2);
+						//System.out.println(cond[kk]);
+					}
+				}else{
+					cond[kk]=value[2];
+				}
+				kk++;
+		    }
 		
-		
-		for (int i=0;i<size;i++){     
-		        for (int j=0;i<size;i++){
+		for (int i=0;i<res;i++){     
+		        for (int j=0;j<res;j++){
 		        	double sumdist = 0;
-		             for (int k=0; k<np; k++){
-		            	 	double a = coords[k][0]*size-i;
-		            	 	double b = coords[k][1]*size-j;
+		             for (int k=0; k<nvertices; k++){
+		            	 	double a = coords[k][0]*res-i;
+		            	 	double b = coords[k][1]*res-j;
 		            	 
-		            	 	dist[k]=Math.pow((a),2)+Math.pow((b),2);
-		            	 	sumdist+=dist[k];
+		            	 	dist[k]= Math.pow(Math.pow((a),2)+Math.pow((b),2),smooth);
+		            	 	//dist[k]=Math.pow((a),2)+Math.pow((b),2);
+		            	 	if(dist[k]==0){
+		            	 		dist[k]= 0.0001;
+		            	 	}else{
+		            	 		sumdist+=1/dist[k];  // consesrtar
+		            	 	}
 		             }
 		            
-		             for (int k=0; k<np; k++){
-		            	// matrix[i][j]+=cond[k]/dist[k];
-		            	 matrix[i][j]+=cond[k]/(0.000001+dist[k]);
+		             for (int k=0; k<nvertices; k++){
+		            	matrix[i][j]+=cond[k]/dist[k];
 		             }
 		             matrix[i][j]=matrix[i][j]/sumdist;
 		        }
@@ -104,6 +86,83 @@ public double[][] geraMatrizNey(int res, double [][] original){
 		return matrix;
 	}
 	
+
+
+public double[][] geraMatrizNeyGaussian(int res, HashMap<String, double[]> original,double sigma,boolean boollog){
+	
+			
+		
+		int nvertices = original.size();  //number of original points
+		double[] cond = new double[nvertices]; // um vetor que indica a expressao de cada nodo
+		double[][] matrix =new double[res][res]; // a matrix que devera ser impressa 
+		double[][] coords = new double[nvertices][2]; // a posicao de cada um dos vertices (deve sair do cytoscape)
+		double[] dist = new double[nvertices];           // tem de estar entre [0,1] x [0,1]
+		double s = sigma;
+		  
+		   
+		    //iterate through HashMap values iterator
+		 Collection c = original.keySet();
+		 Iterator itr = c.iterator();
+		  
+		 
+		  
+		  
+		  int kk= 0;
+		  double mediacond =0.0;
+		    while(itr.hasNext()){
+		    	double[] value = original.get(itr.next());
+		    	coords[kk][0]= value[0];
+				coords[kk][1]= 1-value[1];
+				coords[kk][0]=0.1+0.8*coords[kk][0];
+				coords[kk][1]=0.1+0.8*coords[kk][1];
+				if(boollog){
+					if(value[2]==0){
+						cond[kk]=0;
+						//System.out.println(cond[kk]);
+					}else{
+						cond[kk]=Math.log(value[2])/Math.log(2);
+						//System.out.println(cond[kk]);
+					}
+				}else{
+					cond[kk]=value[2];
+				}
+				mediacond = mediacond + cond[kk];
+				kk++;
+		    }
+		    
+		    mediacond = mediacond/nvertices;
+		    for (int i=0;i<res;i++){     
+		        for (int j=0;j<res;j++){
+		        	matrix[i][j]=mediacond;
+		        }
+		    }   
+		s = s*res;
+		
+		
+		
+		for (int i=0;i<res;i++){     
+		        for (int j=0;j<res;j++){
+		        	double sumdist = 0;
+		             for (int k=0; k<nvertices; k++){
+		            	 	double a = coords[k][0]*res-i;
+		            	 	double b = coords[k][1]*res-j;
+		            	 
+		            	 	
+		            	 	dist[k]=Math.exp(-(Math.pow((a),2)+Math.pow((b),2))/(s*s));
+		            	 	//sumdist+=dist[k];
+		             }
+		            
+		             for (int k=0; k<nvertices; k++){
+		            	 matrix[i][j]+=cond[k]*dist[k];
+		             }
+		             matrix[i][j]=matrix[i][j]/(s*s);
+		        }
+		}
+		
+		return matrix;
+	}
+
+/*
 public double[][] generateSpline(HashMap<String, double[]> originalPoints, int res, int smooth){
 	//public List<Coord3d> generateSpline(HashMap<String, double[]> originalPoints, int res, int smooth){
 			
@@ -207,7 +266,10 @@ public double[][] generateSpline(HashMap<String, double[]> originalPoints, int r
 		
 	}
 	
-	private double getCellAverage(HashMap<String, double[]> originalPoints, double xi, double yi,double cellSize) {
+*/
+
+
+private double getCellAverage(HashMap<String, double[]> originalPoints, double xi, double yi,double cellSize) {
 		//o tamanho da celula eh 1
 		double soma=0;
 		int quociente = 0;

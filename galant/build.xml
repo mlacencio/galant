@@ -3,24 +3,12 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="D:/programas/Cytoscape_v2.8.3/plugins/galant.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="C:/Program Files/Cytoscape_v2.8.2/plugins/galant.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/forms-1.3.0.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/gluegen-rt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/jogl.all.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/jogl.util.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/nativewindow.all.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/newt.all.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/opencsv-2.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/org.convexhull.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/org.jzy3d-0.9.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/swt-debug.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/commons-io-2.4.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/flanagan.jar"/>
+            <fileset dir="C:/ESTHER/DOUTORADO/SoftwareGalant/galant/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/ESTHER/DOUTORADO/SoftwareGalant/galant/lib/forms-1.3.0.jar"/>
         </jar>
     </target>
 </project>

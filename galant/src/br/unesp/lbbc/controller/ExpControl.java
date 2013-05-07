@@ -18,11 +18,19 @@ public class ExpControl {
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 
 		for (String key : mapExp.keySet()) {
-				
 			Double atributeCalculado = (mapExp.get(key)[2]) / (mapExp.get(key)[2]+mapControl.get(key)[2]);
-			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado };
+			
+			if (atributeCalculado.isNaN()){
+				atributeCalculado = 0.0001;
+			}
+				
+			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
+			
+			//System.out.println(mapExp.get(key)[2]+"\t"+mapControl.get(key)[2]+"\t"+atributeCalculado);//alter choks
+			
 			newMap.put(key,valores);
 			
+			 
 		}
 		return newMap;
 	}

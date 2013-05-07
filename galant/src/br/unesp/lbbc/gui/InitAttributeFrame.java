@@ -30,7 +30,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import br.unesp.lbbc.util.Loadlibs;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -141,7 +140,7 @@ public class InitAttributeFrame extends JFrame {
 		
 		tfCustom = new JTextField();
 		tfCustom.setMinimumSize(new Dimension(50, 22));
-		tfCustom.setText("50");
+		tfCustom.setText("100");
 		panelFunctions.add(tfCustom, "6, 2, fill, default");
 		tfCustom.setColumns(10);
 		
@@ -150,7 +149,7 @@ public class InitAttributeFrame extends JFrame {
 		
 		tfSmooth = new JTextField();
 		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("5");
+		tfSmooth.setText("1.5");
 		panelFunctions.add(tfSmooth, "6, 4, fill, default");
 		tfSmooth.setColumns(10);
 		
@@ -164,9 +163,10 @@ public class InitAttributeFrame extends JFrame {
 		
 		tfGaussian = new JTextField();
 		tfGaussian.setMinimumSize(new Dimension(50, 22));
-		tfGaussian.setText("0.01");
+		tfGaussian.setText("0.05");
 		panelFunctions.add(tfGaussian, "6, 6, fill, default");
 		tfGaussian.setColumns(10);
+		tfGaussian.setEnabled(false);
 		
 		checkBox2D = new JCheckBox("2D");
 		checkBox2D.setSelected(true);
@@ -190,9 +190,11 @@ public class InitAttributeFrame extends JFrame {
 
 		btnExport = new JButton("");
 		btnExport.setToolTipText("Export Image JPG");
+		btnExport.setEnabled(false);
 		
 		btnExport.setIcon(new ImageIcon(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/export.png")));
 		toolBar.add(btnExport);
+		
 	}
 	
 	private void initListeners() {
@@ -200,18 +202,34 @@ public class InitAttributeFrame extends JFrame {
 		btnDraw.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				SurfacePanel sp = new SurfacePanel();
-				String function = buttonGroup.getSelection().getActionCommand();//getFunctionString();
-				String atts = jListAtt.getAtt();
-				int smooth = Integer.parseInt(tfSmooth.getText());
+				
+			  SurfacePanel sp = new SurfacePanel();
+			  String function = buttonGroup.getSelection().getActionCommand();//getFunctionString();
+			  String atts = jListAtt.getAtt();
+				
 				
 				if (function=="Gaussian"){
-					sp.drawGaussian(atts,null, checkBox2D.isSelected(), tfGaussian.getText(),chckbxLog.isSelected());
+					double sigma = Double.parseDouble(tfGaussian.getText());
+					int te = Integer.parseInt(tfCustom.getText());
+					
+					try {
+						setSurfacePanel(sp.drawGaussian2(atts,null, checkBox2D.isSelected(),te,sigma,chckbxLog.isSelected()));
+						btnExport.setEnabled(true);
+						
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
+						//e1.printStackTrace();
+					}	
+					
 				}
 				else if (function=="Custom"){
 					
+					double smooth = Double.parseDouble(tfSmooth.getText());
+					
 					try {
-						sp.drawCustom(atts,null, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected());
+						setSurfacePanel(sp.drawCustom2(atts,null, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
+						btnExport.setEnabled(true);
+						
 					} catch (NullPointerException e1) {
 						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
 						//e1.printStackTrace();
@@ -221,7 +239,7 @@ public class InitAttributeFrame extends JFrame {
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");
 				}
-				setSurfacePanel(sp);				
+			 
 			}
 		});
 		
@@ -236,28 +254,47 @@ public class InitAttributeFrame extends JFrame {
 			}
 		});
 		
+		rdbtnCustom.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfSmooth.setEnabled(true);
+				tfGaussian.setEnabled(false);			
+				
+			}
+		});
+		
+		rdbtnGaussian.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfSmooth.setEnabled(false);
+				tfGaussian.setEnabled(true);
+				
+			}
+		});
 	}
-	
+		
 	private void exportFile() throws IOException {
 		
 		JFileChooser f = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg","jpg");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("png","png");
 		f.addChoosableFileFilter(filter);
 		f.setFileFilter(filter);
 		f.setAcceptAllFileFilterUsed(false); 
 		f.showSaveDialog(null);
 		File fileA = f.getSelectedFile();
 		String fileInit = fileA.getAbsolutePath();
-		String completNameFile = fileInit+".jpg";
+		String completNameFile = fileInit+".png";
 		SurfacePanel.screenshot(completNameFile);
 		
 		
 	}
+	
 
-	public void setSurfacePanel(SurfacePanel surfNew){
+
+	public void setSurfacePanel(JPanel surfNew){
 		
 		panelSurface.removeAll();
-		panelSurface.add(surfNew,BorderLayout.CENTER);
+		panelSurface.add(surfNew);
 		panelSurface.revalidate();
 		
 	}

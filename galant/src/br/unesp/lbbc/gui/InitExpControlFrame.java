@@ -154,7 +154,7 @@ public class InitExpControlFrame extends JFrame {
 		
 		tfCustom = new JTextField();
 		tfCustom.setMinimumSize(new Dimension(50, 22));
-		tfCustom.setText("50");
+		tfCustom.setText("100");
 		panelFunctions.add(tfCustom, "6, 2, fill, default");
 		tfCustom.setColumns(10);
 		
@@ -163,7 +163,7 @@ public class InitExpControlFrame extends JFrame {
 		
 		tfSmooth = new JTextField();
 		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("5");
+		tfSmooth.setText("1.5");
 		panelFunctions.add(tfSmooth, "6, 4, fill, default");
 		tfSmooth.setColumns(10);
 		
@@ -177,7 +177,9 @@ public class InitExpControlFrame extends JFrame {
 		
 		tfGaussian = new JTextField();
 		tfGaussian.setMinimumSize(new Dimension(50, 22));
-		tfGaussian.setText("0.01");
+		tfGaussian.setText("0.05");
+		tfGaussian.setEnabled(false);
+		
 		panelFunctions.add(tfGaussian, "6, 6, fill, default");
 		tfGaussian.setColumns(10);
 		
@@ -206,6 +208,7 @@ public class InitExpControlFrame extends JFrame {
 		
 		btnExport.setIcon(new ImageIcon(InitExpControlFrame.class.getResource("/br/unesp/lbbc/main/export.png")));
 		toolBar.add(btnExport);
+		btnExport.setEnabled(false);
 		
 		lblSelect = new JLabel("                             ");
 		lblSelect.setHorizontalAlignment(SwingConstants.CENTER);
@@ -226,18 +229,38 @@ public class InitExpControlFrame extends JFrame {
 				String function = buttonGroup.getSelection().getActionCommand();
 				String at1 = jListAttExp.getAtt();
 				String at2 = jListAttControl.getAtt();
-				int smooth = Integer.parseInt(tfSmooth.getText());
+				
 				
 				if (function=="Gaussian"){
-					sp.drawGaussian(at1,at2, checkBox2D.isSelected(), tfGaussian.getText(),chckbxLog.isSelected());
+										
+					try {
+						double sigma = Double.parseDouble(tfGaussian.getText());
+						int te = Integer.parseInt(tfCustom.getText());
+						
+						setSurfacePanel(sp.drawGaussianEC(at1,at2, checkBox2D.isSelected(),te,sigma,chckbxLog.isSelected()));
+						btnExport.setEnabled(true);
+						
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
+						//e1.printStackTrace();
+					}	
 				}
 				else if (function=="Custom"){
-					sp.drawCustom(at1,at2, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected());
+					double smooth = Double.parseDouble(tfSmooth.getText());
+					
+					try {
+						setSurfacePanel(sp.drawCustomEC(at1,at2, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
+						btnExport.setEnabled(true);
+					
+						
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
+						//e1.printStackTrace();
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");
-				}
-				setSurfacePanel(sp);				
+				}				
 			}
 		});
 		
@@ -252,28 +275,46 @@ public class InitExpControlFrame extends JFrame {
 			}
 		});
 		
+		
+		rdbtnCustom.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfSmooth.setEnabled(true);
+				tfGaussian.setEnabled(false);			
+				
+			}
+		});
+		
+		rdbtnGaussian.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfSmooth.setEnabled(false);
+				tfGaussian.setEnabled(true);
+				
+			}
+		});
 	}
 	
 	private void exportFile() throws IOException {
 		
 		JFileChooser f = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg","jpg");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("png","png");
 		f.addChoosableFileFilter(filter);
 		f.setFileFilter(filter);
 		f.setAcceptAllFileFilterUsed(false); 
 		f.showSaveDialog(null);
 		File fileA = f.getSelectedFile();
 		String fileInit = fileA.getAbsolutePath();
-		String completNameFile = fileInit+".jpg";
+		String completNameFile = fileInit+".png";
 		SurfacePanel.screenshot(completNameFile);
 		
 		
 	}
 
-	public void setSurfacePanel(SurfacePanel surfNew){
+	public void setSurfacePanel(JPanel surfNew){
 		
 		panelSurface.removeAll();
-		panelSurface.add(surfNew,BorderLayout.CENTER);
+		panelSurface.add(surfNew);
 		panelSurface.revalidate();
 		
 	}

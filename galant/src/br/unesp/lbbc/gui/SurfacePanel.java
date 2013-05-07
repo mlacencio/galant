@@ -1,17 +1,21 @@
 package br.unesp.lbbc.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import br.unesp.lbbc.choks.Gradient;
+import br.unesp.lbbc.choks.HeatMap;
+import br.unesp.lbbc.controller.ExpControl;
+import br.unesp.lbbc.controller.Mapping;
+import br.unesp.lbbc.controller.Spline;
+
+/*
 import org.jzy3d.chart.Chart;
 import org.jzy3d.colors.Color;
 import org.jzy3d.colors.ColorMapper;
@@ -38,18 +42,7 @@ import org.jzy3d.plot3d.primitives.axes.layout.renderers.ITickRenderer;
 import org.jzy3d.plot3d.rendering.legends.colorbars.ColorbarLegend;
 import org.jzy3d.plot3d.rendering.view.View;
 import org.jzy3d.plot3d.rendering.view.modes.ViewPositionMode;
-import org.math.plot.Plot2DPanel;
-
-import flanagan.analysis.SurfaceSmooth;
-
-import br.unesp.lbbc.controller.ExpControl;
-import br.unesp.lbbc.controller.Mapping;
-import br.unesp.lbbc.controller.Spline;
-import br.unesp.lbbc.model.Functions;
-import br.unesp.lbbc.model.MapperCustom;
-import br.unesp.lbbc.model.MapperGaussianImp;
-import br.unesp.lbbc.model.SurfaceMapper;
-import br.unesp.lbbc.util.Util;
+*/
 
 
 /**
@@ -63,14 +56,15 @@ public class SurfacePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Mapping mapping;
-	private static Chart chart;
+	private static HeatMap HM;
+//choks	private static Chart chart;
 
 
 	public SurfacePanel() {
 		
-		Settings.getInstance().setHardwareAccelerated(true);
+		//choks		Settings.getInstance().setHardwareAccelerated(true);
 		setLayout(new BorderLayout());
-		chart = new Chart("awt");
+		//choks		chart = new Chart("awt");
 	//	chart.addController(new ChartKeyController());
 	//	chart.addController(new ChartMouseController());
 		mapping = new Mapping();
@@ -83,8 +77,100 @@ public class SurfacePanel extends JPanel {
 	 * it won't be used.
 	 * */
 	
+	public JPanel drawGaussianEC(String at1,String at2,boolean isSelected2D,int res,double sigma,boolean log) {
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash;
+		Spline sp = new Spline();
+		
+		if (at2==null){
+			hash = map.getCompleteHash(at1,log);
+			}
+		else{
+			ExpControl expControl = new ExpControl();
+			hash = expControl.calcule(at1, at2);
+			
+		}
+		
+		//normalize map: precisa normalizar pois eu defini abaixo o alcance do eixo x e y entre 0 e 1.
+		//map = Util.Normalize(map);
+		
+		
+		
+		double[][] matrix = sp.geraMatrizNeyGaussian(res, hash, sigma,log);
+		
+	
+		
+		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+		
+		HeatMapDemo HMD = null;
+		try {
+			HMD = new HeatMapDemo(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JPanel sswp = new JPanel();
+        sswp.setLayout(new BorderLayout());
+        sswp.add(HM);
+        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		
+		
+        return sswp;
+			
+		
+	}
+	
+	public JPanel drawCustomEC(String at1,String at2,boolean isSelected2D,int res,double smooth,boolean log) {
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash;
+		Spline sp = new Spline();
+		
+		if (at2==null){
+			hash = map.getCompleteHash(at1,log);
+			}
+		else{
+			ExpControl expControl = new ExpControl();
+			hash = expControl.calcule(at1, at2);
+			
+		}
+		
+		//normalize map: precisa normalizar pois eu defini abaixo o alcance do eixo x e y entre 0 e 1.
+		//map = Util.Normalize(map);
+		
+		
+		
+		double[][] matrix = sp.geraMatrizNeychoks(res, hash, smooth,log);
+		
+	
+		
+		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+		
+		HeatMapDemo HMD = null;
+		try {
+			HMD = new HeatMapDemo(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JPanel sswp = new JPanel();
+        sswp.setLayout(new BorderLayout());
+        sswp.add(HM);
+        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		
+		
+        return sswp;
+			
+		
+	}
+	
+	
+	//Esther
 	public void drawGaussian(String at1,String at2,boolean isSelected2D,String resolution,boolean log) {
-		HashMap<String, double[]> map;
+		/*HashMap<String, double[]> map;
 		
 		if (at2==null){
 			map = mapping.getCompleteHash(at1,log);
@@ -173,20 +259,13 @@ public class SurfacePanel extends JPanel {
 			
 		
 		
-		
+		*/
 	}
-
+	//Ester
 	
-	
-	
-	
-	/**
-	 * if there is only one attribute, the control (at2) is passed as null
-	 * */
-	
-	
+	//Ester
 	public void drawCustom(String at1,String at2, boolean isSelected2D,int res,int smooth,boolean log) {
-		
+		/*
 		Mapping map = new Mapping();
 		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
 		Spline sp = new Spline();
@@ -203,11 +282,97 @@ public class SurfacePanel extends JPanel {
 		chart.getScene().getGraph().add(surface);
 		this.add((Component) chart.getCanvas(), BorderLayout.CENTER);		
 		chart.setViewMode(ViewPositionMode.TOP);
+		*/
+	}
+	//Ester
+	
+	
+	
+	//Choks
+	public JPanel drawGaussian2(String at1,String at2, boolean teste,int res, double sigma,boolean log) {
 		
+		
+		
+		Mapping map = new Mapping();
+		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
+		Spline sp = new Spline();
+		
+		double[][] matrix = sp.geraMatrizNeyGaussian(res, hash, sigma,log);
+		
+		
+		
+		
+		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+		
+		HeatMapDemo HMD = null;
+		try {
+			HMD = new HeatMapDemo(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JPanel sswp = new JPanel();
+        sswp.setLayout(new BorderLayout());
+        sswp.add(HM);
+        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		
+		
+        return sswp;
+		
+	
+	}
+
+		
+	public JPanel drawCustom2(String at1,String at2, boolean isSelected2D,int res,double smooth,boolean log) {
+	
+		
+		Mapping map = new Mapping();
+		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
+		Spline sp = new Spline();
+		
+			
+		
+		double[][] matrix = sp.geraMatrizNeychoks(res, hash,smooth,log);
+		
+		
+		
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+		
+			
+		HeatMapDemo HMD = null;
+		try {
+			HMD = new HeatMapDemo(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JPanel sswp = new JPanel();
+		
+        sswp.setLayout(new BorderLayout());
+        sswp.add(HM);
+        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		
+		
+        return sswp;
 	}
 	
+	//Choks
+	
+	/**
+	 * if there is only one attribute, the control (at2) is passed as null
+	 * */
+	
+	
+	
+	
+	
+	//Ester
 	public void drawCustomNey(String at1,String at2, boolean isSelected2D,int res,int smooth,boolean log) { 
-
+		/*
 		
 		Mapping map = new Mapping();
 		HashMap<String, double[]> originalPointsHash = map.getCompleteHash(at1, log);
@@ -272,14 +437,18 @@ public class SurfacePanel extends JPanel {
 		
 		
 		
-
+*/
 	}
+	//Ester
 	
+	
+	/*	
+ *
 	public static Chart getChart(){
 		return chart;
 	}
 	
-	
+	*/
 
 	@Override
 	protected void finalize() throws Throwable {
@@ -292,9 +461,10 @@ public class SurfacePanel extends JPanel {
 	
 	public static void screenshot(String filename) throws IOException{
 		File output = new File(filename);
+		
 		if(!output.getParentFile().exists())
 			output.mkdirs();
-		ImageIO.write(chart.screenshot(), "png", output);
+		ImageIO.write(HM.screenshot() , "png", output);
 		JOptionPane.showMessageDialog(null,"Successfully saved");
 	}
 
