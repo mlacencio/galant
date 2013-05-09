@@ -2,14 +2,13 @@ package br.unesp.lbbc.gui;
 
 import javax.swing.*;
 
-import br.unesp.lbbc.choks.Gradient;
-import br.unesp.lbbc.choks.HeatMap;
-
+import br.unesp.lbbc.util.Gradient;
+import br.unesp.lbbc.util.HeatMap;
 import java.awt.*;
 import java.awt.event.*;
 
 //class HeatMapDemo extends JFrame implements ItemListener
-class HeatMapDemo extends JPanel implements ItemListener
+public class HeatMapPanel extends JPanel implements ItemListener
 {
     HeatMap panel;
     JPanel listPane;
@@ -37,7 +36,7 @@ class HeatMapDemo extends JPanel implements ItemListener
                            Gradient.GRADIENT_RED_TO_GREEN,
                            Gradient.GRADIENT_ROY};
 
-    public HeatMapDemo(HeatMap HM) throws Exception
+    public HeatMapPanel(HeatMap HM) throws Exception
     {
         
         listPane = new JPanel();

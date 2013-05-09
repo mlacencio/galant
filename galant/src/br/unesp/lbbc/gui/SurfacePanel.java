@@ -7,11 +7,11 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import br.unesp.lbbc.choks.Gradient;
-import br.unesp.lbbc.choks.HeatMap;
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
+import br.unesp.lbbc.util.Gradient;
+import br.unesp.lbbc.util.HeatMap;
 
 
 /**
@@ -24,14 +24,12 @@ public class SurfacePanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Mapping mapping;
 	private static HeatMap HM;
 
 
 	public SurfacePanel() {
 		
 		setLayout(new BorderLayout());
-		mapping = new Mapping();
 		
 		
 	}
@@ -57,14 +55,12 @@ public class SurfacePanel extends JPanel {
 		
 		double[][] matrix = sp.gaussian(res, hash, sigma,log);
 		
-	
-		
 		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
 		
-		HeatMapDemo HMD = null;
+		HeatMapPanel HMD = null;
 		try {
-			HMD = new HeatMapDemo(HM);
+			HMD = new HeatMapPanel(HM);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,9 +93,9 @@ public class SurfacePanel extends JPanel {
 		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
 		
-		HeatMapDemo HMD = null;
+		HeatMapPanel HMD = null;
 		try {
-			HMD = new HeatMapDemo(HM);
+			HMD = new HeatMapPanel(HM);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,9 +119,9 @@ public class SurfacePanel extends JPanel {
 		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
 		
-		HeatMapDemo HMD = null;
+		HeatMapPanel HMD = null;
 		try {
-			HMD = new HeatMapDemo(HM);
+			HMD = new HeatMapPanel(HM);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,9 +146,9 @@ public class SurfacePanel extends JPanel {
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
 		
-		HeatMapDemo HMD = null;
+		HeatMapPanel HMD = null;
 		try {
-			HMD = new HeatMapDemo(HM);
+			HMD = new HeatMapPanel(HM);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

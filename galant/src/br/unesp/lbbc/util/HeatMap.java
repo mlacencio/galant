@@ -1,4 +1,4 @@
-package br.unesp.lbbc.choks;
+package br.unesp.lbbc.util;
 
 
 import java.awt.*;

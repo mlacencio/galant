@@ -140,8 +140,7 @@ public class Mapping {
 	}
 
 	// Get complete hash map for one attribute
-	public HashMap<String, double[]> getCompleteHash(String attribute,
-			Boolean isLog) {
+	public HashMap<String, double[]> getCompleteHash(String attribute,Boolean isLog) {
 
 		HashMap<String, Double> att = new HashMap<String, Double>();
 
