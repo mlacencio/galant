@@ -1,5 +1,6 @@
 package br.unesp.lbbc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ListModel;
@@ -21,6 +22,7 @@ public class ListModelAtt implements ListModel {
 	public static int TYPE_BOOLEAN = 1;
 	public static int TYPE_FLOATING = 2;
 	public static int TYPE_INTEGER = 3;
+	private String[] arrayAtt = null;
 	
 	@Override
 	public void addListDataListener(ListDataListener arg0) {

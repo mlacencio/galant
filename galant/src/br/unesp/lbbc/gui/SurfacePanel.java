@@ -109,7 +109,7 @@ public class SurfacePanel extends JPanel {
 	}
 	
 	//Choks
-	public JPanel drawGaussian2(String at1,String at2, boolean teste,int res, double sigma,boolean log) {
+	public JPanel drawGaussian(String at1,String at2,int res, double sigma,boolean log) {
 		
 		Mapping map = new Mapping();
 		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
@@ -135,7 +135,7 @@ public class SurfacePanel extends JPanel {
 	}
 
 		
-	public JPanel drawCustom2(String at1,String at2, boolean isSelected2D,int res,double smooth,boolean log) {
+	public JPanel drawCustom(String at1,String at2, int res,double smooth,boolean log) {
 	
 		
 		Mapping map = new Mapping();

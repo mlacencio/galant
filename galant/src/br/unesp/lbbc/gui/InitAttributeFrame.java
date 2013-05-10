@@ -134,43 +134,44 @@ public class InitAttributeFrame extends JFrame {
 		buttonGroup.add(rdbtnCustom);
 		panelFunctions.add(rdbtnCustom, "2, 2");
 		
-		lblResolution = new JLabel("Resolution");
-		panelFunctions.add(lblResolution, "4, 2, right, default");
-		
-		tfCustom = new JTextField();
-		tfCustom.setMinimumSize(new Dimension(50, 22));
-		tfCustom.setText("100");
-		panelFunctions.add(tfCustom, "6, 2, fill, default");
-		tfCustom.setColumns(10);
-		
 		lblSmoothness = new JLabel("Smoothness");
-		panelFunctions.add(lblSmoothness, "4, 4, right, default");
+		panelFunctions.add(lblSmoothness, "4, 2, right, default");
 		
 		tfSmooth = new JTextField();
 		tfSmooth.setToolTipText("Only integer");
 		tfSmooth.setText("1.5");
-		panelFunctions.add(tfSmooth, "6, 4, fill, default");
+		panelFunctions.add(tfSmooth, "6, 2, fill, default");
 		tfSmooth.setColumns(10);
 		
 		rdbtnGaussian = new JRadioButton("Gaussian");
 		rdbtnGaussian.setActionCommand("Gaussian");
 		buttonGroup.add(rdbtnGaussian);
-		panelFunctions.add(rdbtnGaussian, "2, 6");
+		panelFunctions.add(rdbtnGaussian, "2, 4");
 		
 		JLabel lblSigma = new JLabel("Sigma");
-		panelFunctions.add(lblSigma, "4, 6, right, default");
-		
-		tfGaussian = new JTextField();
-		tfGaussian.setMinimumSize(new Dimension(50, 22));
-		tfGaussian.setText("0.05");
-		panelFunctions.add(tfGaussian, "6, 6, fill, default");
-		tfGaussian.setColumns(10);
-		tfGaussian.setEnabled(false);
+		panelFunctions.add(lblSigma, "4, 4, right, default");
 		
 		checkBox2D = new JCheckBox("2D");
 		checkBox2D.setSelected(true);
 		
+		tfGaussian = new JTextField();
+		tfGaussian.setMinimumSize(new Dimension(50, 22));
+		tfGaussian.setText("0.05");
+		panelFunctions.add(tfGaussian, "6, 4, fill, default");
+		tfGaussian.setColumns(10);
+		tfGaussian.setEnabled(false);
+		
+		lblResolution = new JLabel("Resolution");
+		panelFunctions.add(lblResolution, "4, 6, right, default");
+		
+		tfCustom = new JTextField();
+		tfCustom.setMinimumSize(new Dimension(50, 22));
+		tfCustom.setText("100");
+		panelFunctions.add(tfCustom, "6, 6, fill, default");
+		tfCustom.setColumns(10);
+		
 		chckbxLog = new JCheckBox("log");
+		chckbxLog.setToolTipText("Select if data are already in log");
 		panelFunctions.add(chckbxLog, "2, 8");
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
@@ -204,15 +205,15 @@ public class InitAttributeFrame extends JFrame {
 				
 			  SurfacePanel sp = new SurfacePanel();
 			  String function = buttonGroup.getSelection().getActionCommand();//getFunctionString();
-			  String atts = jListAtt.getAtt();
-				
+			  String at1 = jListAtt.getAtt();
+			  int res = Integer.parseInt(tfCustom.getText());
+			  boolean log = chckbxLog.isSelected();
 				
 				if (function=="Gaussian"){
 					double sigma = Double.parseDouble(tfGaussian.getText());
-					int te = Integer.parseInt(tfCustom.getText());
 					
 					try {
-						setSurfacePanel(sp.drawGaussian2(atts,null, checkBox2D.isSelected(),te,sigma,chckbxLog.isSelected()));
+						setSurfacePanel(sp.drawGaussian(at1, null, res, sigma, log));
 						btnExport.setEnabled(true);
 						
 					} catch (NullPointerException e1) {
@@ -226,7 +227,7 @@ public class InitAttributeFrame extends JFrame {
 					double smooth = Double.parseDouble(tfSmooth.getText());
 					
 					try {
-						setSurfacePanel(sp.drawCustom2(atts,null, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
+						setSurfacePanel(sp.drawCustom(at1, null, res, smooth, log));
 						btnExport.setEnabled(true);
 						
 					} catch (NullPointerException e1) {
@@ -290,7 +291,7 @@ public class InitAttributeFrame extends JFrame {
 	
 
 
-	public void setSurfacePanel(JPanel surfNew){
+	private void setSurfacePanel(JPanel surfNew){
 		
 		panelSurface.removeAll();
 		panelSurface.add(surfNew);
@@ -298,7 +299,7 @@ public class InitAttributeFrame extends JFrame {
 		
 	}
 	
-	public static void setLookAndFeel() {
+	private static void setLookAndFeel() {
 		
 		WindowsLookAndFeel look = new WindowsLookAndFeel();
 		try {
@@ -310,7 +311,7 @@ public class InitAttributeFrame extends JFrame {
 
 	}
 
-	public String getFunctionString() {
+	private String getFunctionString() {
 		String function = buttonGroup.getSelection().getActionCommand();
 		return function;
 	}
