@@ -1,6 +1,7 @@
 package br.unesp.lbbc.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ListModel;
@@ -12,9 +13,6 @@ import cytoscape.view.CyNetworkView;
 
 public class ListModelAtt implements ListModel {
 
-	/**
-	 * Preciso permitir somente a entrada de dados possível (corrigir a lista Atribute) 
-	 * */
 	
 	private CyAttributes cyNodeAttrs=Cytoscape.getNodeAttributes();	
 	private CyNetworkView net = Cytoscape.getCurrentNetworkView();
@@ -22,7 +20,30 @@ public class ListModelAtt implements ListModel {
 	public static int TYPE_BOOLEAN = 1;
 	public static int TYPE_FLOATING = 2;
 	public static int TYPE_INTEGER = 3;
-	private String[] arrayAtt = null;
+	private List arrayAtt = new ArrayList<String>(); 
+	
+	public ListModelAtt (){
+
+		String[] todosElem = cyNodeAttrs.getAttributeNames();
+		
+		//only add type boolean, floating and integer
+		for (String elem: todosElem){
+			int cynode = cyNodeAttrs.getType(elem);
+			if (cynode==TYPE_BOOLEAN){
+				arrayAtt.add(elem);
+			}
+			else if (cynode==TYPE_FLOATING){
+				arrayAtt.add(elem);
+			}
+			else if (cynode==TYPE_INTEGER){
+				arrayAtt.add(elem);
+			}
+		}
+		
+		Collections.sort(arrayAtt);
+		
+	}
+	
 	
 	@Override
 	public void addListDataListener(ListDataListener arg0) {
@@ -32,14 +53,12 @@ public class ListModelAtt implements ListModel {
 
 	@Override
 	public Object getElementAt(int arg0) {
-		String elem = cyNodeAttrs.getAttributeNames()[arg0];
-		return elem;
+		return arrayAtt.get(arg0);
 	}
 
 	@Override
 	public int getSize() {
-		String size[] = cyNodeAttrs.getAttributeNames();
-		return size.length;
+		return arrayAtt.size();
 	}
 
 	@Override
