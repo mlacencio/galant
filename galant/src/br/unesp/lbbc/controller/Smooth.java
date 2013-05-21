@@ -4,16 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import br.unesp.lbbc.util.Util;
+
 /** Get one HasMap - calculate others points (spline) and then return a new map */
 
 public class Smooth {
 
-	
-	
 public double[][] custom(int res, HashMap<String, double[]> original,double smooth,boolean boollog){
 	
 			
-		
 		int nvertices = original.size();  //number of original points
 		double[] cond = new double[nvertices]; // um vetor que indica a expressao de cada nodo
 		double[][] matrix =new double[res][res]; // a matrix que devera ser impressa 
@@ -24,20 +23,15 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 		 Collection c = original.keySet();
 		 Iterator itr = c.iterator();
 		 
-		 for (int i=0;i<res;i++){     
-		        for (int j=0;j<res;j++){
-		        	matrix[i][j]=0;
-		        }
-		 }
-		  
-		  
-		  int kk= 0;
+		 int kk= 0;
 		    while(itr.hasNext()){
 		    	double[] value = original.get(itr.next());
 		    	coords[kk][0]= value[0];
 				coords[kk][1]=1-value[1];
+				
 				coords[kk][0]=0.1+0.8*coords[kk][0];
 				coords[kk][1]=0.1+0.8*coords[kk][1];
+				
 				if(boollog){
 					if(value[2]==0){
 						cond[kk]=0;
@@ -64,7 +58,7 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 		            	 	if(dist[k]==0){
 		            	 		dist[k]= 0.0001;
 		            	 	}else{
-		            	 		sumdist+=1/dist[k];  // consesrtar
+		            	 		sumdist+=1/dist[k];  // consertar
 		            	 	}
 		             }
 		            
@@ -75,15 +69,21 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 		        }
 		}
 		
-		return matrix;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				System.out.println(matrix[i][j]);
+			}
+		}
+		
+		
+		
+		return Util.normalizeDouble(matrix);
 	}
 	
 
 
 public double[][] gaussian(int res, HashMap<String, double[]> original,double sigma,boolean boollog){
-	
 			
-		
 		int nvertices = original.size();  //number of original points
 		double[] cond = new double[nvertices]; // um vetor que indica a expressao de cada nodo
 		double[][] matrix =new double[res][res]; // a matrix que devera ser impressa 
@@ -95,9 +95,6 @@ public double[][] gaussian(int res, HashMap<String, double[]> original,double si
 		    //iterate through HashMap values iterator
 		 Collection c = original.keySet();
 		 Iterator itr = c.iterator();
-		  
-		 
-		  
 		  
 		  int kk= 0;
 		  double mediacond =0.0;

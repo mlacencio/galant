@@ -183,7 +183,7 @@ public class Mapping {
 
 		HashMap<String, double[]> completHashNormalized = Util.Normalize(completHash);
 
-		return completHashNormalized;
+		return completHash;
 
 	}
 

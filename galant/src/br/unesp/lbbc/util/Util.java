@@ -46,10 +46,10 @@ public class Util {
 			double newX = ((map.get(key)[0]) - xmin) / (xmax - xmin);
 			double newY = ((map.get(key)[1]) - ymin) / (ymax - ymin);
 			double newZ = (((map.get(key)[2]) - zmin) / (zmax - zmin));
-			double[] newCoord = { newX, newY, newZ };
+			//double[] newCoord = { newX, newY, newZ };
 
 			// use this line to NOT normalize the attribute
-			//double[] newCoord = { newX, newY, map.get(key)[2] };
+			double[] newCoord = { newX, newY, map.get(key)[2] };
 
 			newMap.put(key, newCoord);
 
