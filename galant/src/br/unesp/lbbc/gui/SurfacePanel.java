@@ -12,7 +12,7 @@ import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
 import br.unesp.lbbc.util.Gradient;
 import br.unesp.lbbc.util.HeatMap;
-
+import br.unesp.lbbc.util.subdivision.CCSurface;
 
 /**
  * To draw the surface it's needed to know what attribute and function
@@ -26,126 +26,36 @@ public class SurfacePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static HeatMap HM;
 
-
 	public SurfacePanel() {
-		
+
 		setLayout(new BorderLayout());
-		
-		
-	}
-	
-	/**
-	 * if there is only one attribute, the control (at2) is passed as null and the boolean log is true, but 
-	 * it won't be used.
-	 * */
-	
-	public JPanel drawGaussianEC(String at1,String at2,boolean isSelected2D,int res,double sigma,boolean log) {
-		Mapping map = new Mapping();
-		HashMap<String, double[]> hash;
-		Smooth sp = new Smooth();
-		
-		if (at2==null){
-			hash = map.getCompleteHash(at1,log);
-			}
-		else{
-			ExpControl expControl = new ExpControl();
-			hash = expControl.calcule(at1, at2);
-			
-		}
-		
-		double[][] matrix = sp.gaussian(res, hash, sigma,log);
-		
-		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-		
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		JPanel sswp = new JPanel();
-        sswp.setLayout(new BorderLayout());
-        sswp.add(HM);
-        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-        return sswp;
-			
-	}
-	
-	public JPanel drawCustomEC(String at1,String at2,boolean isSelected2D,int res,double smooth,boolean log) {
-		Mapping map = new Mapping();
-		HashMap<String, double[]> hash;
-		Smooth sp = new Smooth();
-		
-		if (at2==null){
-			hash = map.getCompleteHash(at1,log);
-			}
-		else{
-			ExpControl expControl = new ExpControl();
-			hash = expControl.calcule(at1, at2);
-			
-		}
-		
-		double[][] matrix = sp.custom(res, hash, smooth,log);
-		
-		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-		
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		JPanel sswp = new JPanel();
-        sswp.setLayout(new BorderLayout());
-        sswp.add(HM);
-        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-        return sswp;
-	}
-	
-	//Choks
-	public JPanel drawGaussian(String at1,String at2,int res, double sigma,boolean log) {
-		
-		Mapping map = new Mapping();
-		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
-		Smooth sp = new Smooth();
-		
-		double[][] matrix = sp.gaussian(res, hash, sigma,log);
-		HM = new HeatMap(matrix, true,Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-		
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		JPanel sswp = new JPanel();
-        sswp.setLayout(new BorderLayout());
-        sswp.add(HM);
-        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-        return sswp;
+
 	}
 
-		
-	public JPanel drawCustom(String at1,String at2, int res,double smooth,boolean log) {
-	
-		
+	/**
+	 * if there is only one attribute, the control (at2) is passed as null and
+	 * the boolean log is true, but it won't be used.
+	 * */
+
+	public JPanel drawGaussianEC(String at1, String at2, boolean isSelected2D,
+			int res, double sigma, boolean log) {
 		Mapping map = new Mapping();
-		HashMap<String,double[]> hash = map.getCompleteHash(at1, log);
+		HashMap<String, double[]> hash;
 		Smooth sp = new Smooth();
-		
-		double[][] matrix = sp.custom(res, hash,smooth,log);
+
+		if (at2 == null) {
+			hash = map.getCompleteHash(at1, log);
+		} else {
+			ExpControl expControl = new ExpControl();
+			hash = expControl.calcule(at1, at2);
+
+		}
+
+		double[][] matrix = sp.gaussian(res, hash, sigma, log);
+
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
-		
+
 		HeatMapPanel HMD = null;
 		try {
 			HMD = new HeatMapPanel(HM);
@@ -153,27 +63,192 @@ public class SurfacePanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		JPanel sswp = new JPanel();
-		
-        sswp.setLayout(new BorderLayout());
-        sswp.add(HM);
-        sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-		
-        return sswp;
-	}
-	
-	//Choks
-	
-	public static void screenshot(String filename) throws IOException{
-		File output = new File(filename);
-		
-		if(!output.getParentFile().exists())
-			output.mkdirs();
-		ImageIO.write(HM.screenshot() , "png", output);
-		JOptionPane.showMessageDialog(null,"Successfully saved");
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		return sswp;
+
 	}
 
+	public JPanel drawCustomEC(String at1, String at2, boolean isSelected2D,
+			int res, double smooth, boolean log) {
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash;
+		Smooth sp = new Smooth();
+
+		if (at2 == null) {
+			hash = map.getCompleteHash(at1, log);
+		} else {
+			ExpControl expControl = new ExpControl();
+			hash = expControl.calcule(at1, at2);
+
+		}
+
+		double[][] matrix = sp.custom(res, hash, smooth, log);
+
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+
+		HeatMapPanel HMD = null;
+		try {
+			HMD = new HeatMapPanel(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JPanel sswp = new JPanel();
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		return sswp;
+	}
+
+	// Choks
+	public JPanel drawGaussian(String at1, String at2, int res, double sigma,
+			boolean log) {
+
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
+		Smooth sp = new Smooth();
+
+		double[][] matrix = sp.gaussian(res, hash, sigma, log);
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+
+		HeatMapPanel HMD = null;
+		try {
+			HMD = new HeatMapPanel(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JPanel sswp = new JPanel();
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		return sswp;
+	}
+
+	public JPanel drawCustomChoquito(String at1, String at2, int res, double smooth,
+			boolean log) {
+
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
+		Smooth sp = new Smooth();
+
+		double[][] matrix = sp.custom(res, hash, smooth, log);
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+
+		HeatMapPanel HMD = null;
+		try {
+			HMD = new HeatMapPanel(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JPanel sswp = new JPanel();
+
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+
+		return sswp;
+	}
+
+	public static void screenshot(String filename) throws IOException {
+		File output = new File(filename);
+
+		if (!output.getParentFile().exists())
+			output.mkdirs();
+		ImageIO.write(HM.screenshot(), "png", output);
+		JOptionPane.showMessageDialog(null, "Successfully saved");
+	}
+
+	//esse eh o drawCatmull. Coloquei drawCustom so pra testar rapido
 	
-	
+	public JPanel drawCustom(String at1, String at2, int res, double smooth,
+			boolean log) {
+		int sm = (int) smooth; // numero de vezes que a subdivisao sera
+								// realizada
+		Mapping map = new Mapping();
+
+		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
+
+		// para cada celula da malha rodar todo o hash e avaliar quais pontos
+		// estao dentro dela e tirar a media
+		// aproveitar para gerar mesh 3D ou mesh[][][] e fazer a subdivisao
+		float[][][] mps = new float[res][res][3]; // mps = malhaParaSubdividir
+		for (int i = 0; i < res; i++) {
+			for (int j = 0; j < res; j++) {
+				int sum = 0;
+				for (double[] coord : hash.values()) {
+					// em x
+					if (coord[0] > (i * 1.0 / res) && coord[0] < (i * 1.0 / res + 1.0 / res)
+					&&  coord[1] > (j * 1.0 / res) && coord[1] < (j * 1.0 / res + 1.0 / res)){
+						
+						mps[i][j][0]=mps[i][j][0]+(float) coord[2];
+						sum++;
+					}		
+				}
+				mps[i][j][0]=(float) (i * 1.0 / res);
+				mps[i][j][1]=(float) (j * 1.0 / res);
+				mps[i][j][0]=mps[i][j][0]/sum;
+
+			}	
+		}
+		CCSurface ccsurf = new CCSurface();
+		float[][][] mesh = ccsurf.divideCC(mps, sm);
+		double[][] matrix = convertDoubleMesh(mesh);
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+
+		HeatMapPanel HMD = null;
+		try {
+			HMD = new HeatMapPanel(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JPanel sswp = new JPanel();
+
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+
+		return sswp;
+		
+
+		
+	}
+
+	private double[][] convertDoubleMesh(float[][][] mesh) {
+		int res=mesh.length;
+		double[][] nmesh = new double[res][res];
+		for (int i = 0; i < res; i++) {
+			for (int j = 0; j < res; j++) {
+				//percorrer toda a mesh e verificar como cada valor se encaixa na malha
+				for (float[][] ponto:mesh) {
+					
+						
+					
+				}
+				
+				
+				
+				
+			}
+		}
+		
+		
+		
+		return nmesh;
+	}
+
 }

@@ -165,8 +165,7 @@ public class Mapping {
 
 			Double terceiraColuna = att.get(key);
 			if (terceiraColuna != null) {
-				double xyz[] = { coor.get(key)[0], coor.get(key)[1],
-						terceiraColuna };
+				double xyz[] = { coor.get(key)[0], coor.get(key)[1],terceiraColuna };
 				completHash.put(key, xyz);
 			} else {
 
