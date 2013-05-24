@@ -46,10 +46,10 @@ public class Util {
 			double newX = ((map.get(key)[0]) - xmin) / (xmax - xmin);
 			double newY = ((map.get(key)[1]) - ymin) / (ymax - ymin);
 			double newZ = (((map.get(key)[2]) - zmin) / (zmax - zmin));
-			//double[] newCoord = { newX, newY, newZ };
+			double[] newCoord = { newX, newY, newZ };
 
 			// use this line to NOT normalize the attribute
-			double[] newCoord = { newX, newY, map.get(key)[2] };
+			//double[] newCoord = { newX, newY, map.get(key)[2] };
 
 			newMap.put(key, newCoord);
 
@@ -83,5 +83,43 @@ public class Util {
 
 		return data;
 	}
+	
+	public static float[][][] normalizeFloat(float[][][] mesh){
+		//determinar menor e maior valorem mesh
+				double xmax = mesh[0][0][0];
+				double ymax = mesh[0][0][1];
+				double zmax = mesh[0][0][2]; 
+				
+				double xmin = xmax;double ymin = ymax;double zmin = zmax;
+				
+				for (int i = 0; i < mesh.length; i++) {
+					for (int j = 0; j < mesh.length; j++) {
+						if (mesh[i][j][0]>xmax){xmax=mesh[i][j][0];}
+						if (mesh[i][j][0]<xmin){xmin=mesh[i][j][0];}
+						if (mesh[i][j][1]>ymax){ymax=mesh[i][j][1];}
+						if (mesh[i][j][1]<ymin){ymin=mesh[i][j][1];}
+						if (mesh[i][j][2]>zmax){zmax=mesh[i][j][2];}
+						if (mesh[i][j][2]<zmin){zmin=mesh[i][j][2];}
+					}
+				}
+				
+				float[][][] nmesh = new float[mesh.length][mesh[0].length][mesh[0][0].length];
+				float vx = (float) (xmax-xmin);
+				float vy = (float) (ymax-ymin);
+				float vz = (float) (zmax-zmin);
+				
+				
+				for (int i = 0; i < nmesh.length; i++) {
+					for (int j = 0; j < nmesh.length; j++) {
+						nmesh[i][j][0]=(float) (vx/(mesh[i][j][0]-xmin));
+						nmesh[i][j][1]=(float) (vy/(mesh[i][j][1]-ymin));
+						nmesh[i][j][2]=(float) (vz/(mesh[i][j][2]-zmin));
+						
+					}
+				}
+				
+		return nmesh;
+	}
+	
 
 }

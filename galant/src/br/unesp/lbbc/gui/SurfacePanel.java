@@ -12,6 +12,7 @@ import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
 import br.unesp.lbbc.util.Gradient;
 import br.unesp.lbbc.util.HeatMap;
+import br.unesp.lbbc.util.Util;
 import br.unesp.lbbc.util.subdivision.CCSurface;
 
 /**
@@ -133,7 +134,7 @@ public class SurfacePanel extends JPanel {
 		return sswp;
 	}
 
-	public JPanel drawCustomChoquito(String at1, String at2, int res, double smooth,
+	public JPanel drawCustom(String at1, String at2, int res, double smooth,
 			boolean log) {
 
 		Mapping map = new Mapping();
@@ -170,9 +171,9 @@ public class SurfacePanel extends JPanel {
 		JOptionPane.showMessageDialog(null, "Successfully saved");
 	}
 
-	//esse eh o drawCatmull. Coloquei drawCustom so pra testar rapido
 	
-	public JPanel drawCustom(String at1, String at2, int res, double smooth,
+	//mudar para catmull
+	public JPanel drawCatmullClark(String at1, String at2, int res, double smooth,
 			boolean log) {
 		int sm = (int) smooth; // numero de vezes que a subdivisao sera
 								// realizada
@@ -186,7 +187,7 @@ public class SurfacePanel extends JPanel {
 		float[][][] mps = new float[res][res][3]; // mps = malhaParaSubdividir
 		for (int i = 0; i < res; i++) {
 			for (int j = 0; j < res; j++) {
-				int sum = 0;
+				int sum = 1;
 				for (double[] coord : hash.values()) {
 					// em x
 					if (coord[0] > (i * 1.0 / res) && coord[0] < (i * 1.0 / res + 1.0 / res)
@@ -198,7 +199,8 @@ public class SurfacePanel extends JPanel {
 				}
 				mps[i][j][0]=(float) (i * 1.0 / res);
 				mps[i][j][1]=(float) (j * 1.0 / res);
-				mps[i][j][0]=mps[i][j][0]/sum;
+				if (sum>1){mps[i][j][0]=mps[i][j][0]/(sum-1);}
+				
 
 			}	
 		}
@@ -228,20 +230,20 @@ public class SurfacePanel extends JPanel {
 		
 	}
 
-	private double[][] convertDoubleMesh(float[][][] mesh) {
+	//mesh nao esta vindo normalizada, nao sei porque
+	
+	private double[][] convertDoubleMesh(float[][][] omesh) {
+		
+		float[][][] mesh = Util.normalizeFloat(omesh);
+		
 		int res=mesh.length;
-		double[][] nmesh = new double[res][res];
+		double[][] nmesh = new double[res+1][res+1];
 		for (int i = 0; i < res; i++) {
 			for (int j = 0; j < res; j++) {
-				//percorrer toda a mesh e verificar como cada valor se encaixa na malha
-				for (float[][] ponto:mesh) {
-					
-						
-					
-				}
-				
-				
-				
+				int iX = (int) (mesh[i][j][0]*res);
+				double diY=(mesh[i][j][1]*res);
+				int iY = (int) (mesh[i][j][1]*res);
+				nmesh[iX][iY] = mesh[i][j][2];
 				
 			}
 		}
