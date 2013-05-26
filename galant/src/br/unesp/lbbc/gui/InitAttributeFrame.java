@@ -36,6 +36,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
+import com.jgoodies.forms.layout.Sizes;
 
 public class InitAttributeFrame extends JFrame {
 
@@ -47,7 +48,7 @@ public class InitAttributeFrame extends JFrame {
 	private JSplitPane splitPaneMain;
 	private JSplitPane splitPaneLeft; 
 	private JPanel panelFunctions;
-	private JRadioButton rdbtnCustom;
+	private JRadioButton rdbtnCustom1;
 	private JLabel lblResolution;
 	private JRadioButton rdbtnGaussian;
 	private JButton btnDraw;
@@ -65,6 +66,7 @@ public class InitAttributeFrame extends JFrame {
 	private JLabel lblSmoothness;
 	private JTextField tfSmooth;
 	private JCheckBox chckbxLog;
+	private JRadioButton rdbtnCustom2;
 
 		/**
 	 * Create the frame.
@@ -99,6 +101,7 @@ public class InitAttributeFrame extends JFrame {
 		splitPaneMain.setLeftComponent(splitPaneLeft);
 		
 		jListAtt = new JListAtt();
+		jListAtt.setSelectedIndex(0);
 		JScrollPane scrollPane = new JScrollPane(jListAtt);
 		splitPaneLeft.setLeftComponent(scrollPane);
 		
@@ -112,7 +115,7 @@ public class InitAttributeFrame extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("min:grow"),
+				new ColumnSpec(ColumnSpec.FILL, Sizes.bounded(Sizes.MINIMUM, Sizes.constant("20dlu", true), Sizes.constant("50dlu", true)), 1),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -127,39 +130,44 @@ public class InitAttributeFrame extends JFrame {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
-		
-		rdbtnCustom = new JRadioButton("Custom");
-		rdbtnCustom.setSelected(true);
-		rdbtnCustom.setActionCommand("Custom");
-		buttonGroup.add(rdbtnCustom);
-		panelFunctions.add(rdbtnCustom, "2, 2");
-		
-		lblSmoothness = new JLabel("Smoothness");
-		panelFunctions.add(lblSmoothness, "4, 2, right, default");
-		
-		tfSmooth = new JTextField();
-		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("1.5");
-		panelFunctions.add(tfSmooth, "6, 2, fill, default");
-		tfSmooth.setColumns(10);
-		
 		rdbtnGaussian = new JRadioButton("Gaussian");
 		rdbtnGaussian.setActionCommand("Gaussian");
 		buttonGroup.add(rdbtnGaussian);
-		panelFunctions.add(rdbtnGaussian, "2, 4");
+		panelFunctions.add(rdbtnGaussian, "2, 2");
 		
 		JLabel lblSigma = new JLabel("Sigma");
-		panelFunctions.add(lblSigma, "4, 4, right, default");
-		
-		checkBox2D = new JCheckBox("2D");
-		checkBox2D.setSelected(true);
+		panelFunctions.add(lblSigma, "4, 2, right, default");
 		
 		tfGaussian = new JTextField();
 		tfGaussian.setMinimumSize(new Dimension(50, 22));
 		tfGaussian.setText("0.05");
-		panelFunctions.add(tfGaussian, "6, 4, fill, default");
+		panelFunctions.add(tfGaussian, "6, 2, fill, default");
 		tfGaussian.setColumns(10);
 		tfGaussian.setEnabled(false);
+		
+		
+		rdbtnCustom1 = new JRadioButton("Custom1");
+		rdbtnCustom1.setActionCommand("Custom1");
+		rdbtnCustom1.setSelected(true);
+		buttonGroup.add(rdbtnCustom1);
+		panelFunctions.add(rdbtnCustom1, "2, 4");
+		
+		checkBox2D = new JCheckBox("2D");
+		checkBox2D.setSelected(true);
+		
+		lblSmoothness = new JLabel("Smooth");
+		panelFunctions.add(lblSmoothness, "4, 4, right, default");
+		
+		tfSmooth = new JTextField();
+		tfSmooth.setToolTipText("Only integer");
+		tfSmooth.setText("3");
+		panelFunctions.add(tfSmooth, "6, 4, fill, default");
+		tfSmooth.setColumns(10);
+		
+		rdbtnCustom2 = new JRadioButton("Custom2");
+		rdbtnCustom2.setActionCommand("Custom2");
+		buttonGroup.add(rdbtnCustom2);
+		panelFunctions.add(rdbtnCustom2, "2, 6");
 		
 		lblResolution = new JLabel("Resolution");
 		panelFunctions.add(lblResolution, "4, 6, right, default");
@@ -222,11 +230,28 @@ public class InitAttributeFrame extends JFrame {
 					}	
 					
 				}
-				else if (function=="Custom"){
+				else if (function=="Custom1"){ //CUSTOM DA ESTHER
 					
 					double smooth = Double.parseDouble(tfSmooth.getText());
 					
 					try {
+						
+						setSurfacePanel(sp.drawCustomEC(at1, null, res, smooth, log));
+						btnExport.setEnabled(true);
+						
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
+						//e1.printStackTrace();
+					}
+				
+				}
+				
+				else if (function=="Custom2"){ //CUSTOM DO NEY
+					
+					double smooth = Double.parseDouble(tfSmooth.getText());
+					
+					try {
+						
 						setSurfacePanel(sp.drawCustom(at1, null, res, smooth, log));
 						btnExport.setEnabled(true);
 						
@@ -254,7 +279,7 @@ public class InitAttributeFrame extends JFrame {
 			}
 		});
 		
-		rdbtnCustom.addActionListener(new ActionListener() {
+		rdbtnCustom1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(true);

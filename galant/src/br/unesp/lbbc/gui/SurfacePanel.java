@@ -7,6 +7,8 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import flanagan.analysis.SurfaceSmooth;
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
@@ -43,17 +45,21 @@ public class SurfacePanel {
 		HashMap<String, double[]> hash;
 		Smooth sp = new Smooth();
 
+		//soh normaliza se nao for exp x controle
+		
 		if (at2 == null) {
 			hash = map.getCompleteHash(at1, log);
+			hash = Util.Normalize(hash);
 		} else {
 			ExpControl expControl = new ExpControl();
 			hash = expControl.calcule(at1, at2,log);
 		}
 
-		//normaliza o hashmap aqui
+		
+		
 		hash = Util.Normalize(hash);
 		
-		double[][] matrix = sp.gaussian(res, hash, sigma, log);
+		double[][] matrix = sp.gaussian(res, hash, sigma);
 
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
@@ -81,6 +87,8 @@ public class SurfacePanel {
 
 		if (at2 == null) {
 			hash = map.getCompleteHash(at1, log);
+			
+			
 		} else {
 			ExpControl expControl = new ExpControl();
 			hash = expControl.calcule(at1, at2,log);
@@ -88,8 +96,7 @@ public class SurfacePanel {
 		}
 
 		hash = Util.Normalize(hash);
-		
-		double[][] matrix = sp.custom(res, hash, smooth, log);
+		double[][] matrix = sp.custom(res, hash, smooth);
 
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
@@ -109,6 +116,8 @@ public class SurfacePanel {
 		return sswp;
 	}
 
+	
+	
 	
 	public static void screenshot(String filename) throws IOException {
 		File output = new File(filename);
@@ -257,4 +266,59 @@ public class SurfacePanel {
 		return nmesh;
 	}
 */
+	
+	
+	
+	public JPanel drawCustomEC(String at1, String at2, int res, double smooth, boolean log) {
+		Mapping map = new Mapping();
+		HashMap<String, double[]> hash;
+		Smooth sp = new Smooth();
+
+		if (at2 == null) {
+			hash = map.getCompleteHash(at1, log);
+			
+			
+		} else {
+			ExpControl expControl = new ExpControl();
+			hash = expControl.calcule(at1, at2,log);
+
+		}
+
+		//girar o hashmap de novo
+		HashMap<String, double[]> valores = new HashMap<String, double[]>();
+		for(String key: hash.keySet()){
+			double [] newvalue = {hash.get(key)[0],-1.0*hash.get(key)[1],hash.get(key)[2]};
+			valores.put(key,newvalue);
+			
+		}
+		hash = valores;
+		
+		hash = Util.Normalize(hash);
+		
+		double[][] matrix = sp.customEC(res, hash, smooth);
+
+		//aplicar o flanagran
+		
+		SurfaceSmooth smoothness = new SurfaceSmooth(matrix);
+		matrix = smoothness.movingAverage((int) smooth);
+		//matrix = Util.normalizeDouble(matrix);
+		
+		
+		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
+		HM.setDrawLegend(true);
+
+		HeatMapPanel HMD = null;
+		try {
+			HMD = new HeatMapPanel(HM);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JPanel sswp = new JPanel();
+		sswp.setLayout(new BorderLayout());
+		sswp.add(HM);
+		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
+		return sswp;
+	}
 }

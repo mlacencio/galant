@@ -11,8 +11,8 @@ public class AboutDialog extends JDialog {
 		
 		
 		setTitle("About");
-		JLabel label = new JLabel(new ImageIcon(AboutDialog.class.getResource("/br/unesp/lbbc/main/about.png"))); 
-		label.setPreferredSize(new Dimension(520,250));
+		JLabel label = new JLabel(new ImageIcon(AboutDialog.class.getResource("/br/unesp/lbbc/main/about.jpg"))); 
+		label.setPreferredSize(new Dimension(800,500));
 		
 		getContentPane().add(label );
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

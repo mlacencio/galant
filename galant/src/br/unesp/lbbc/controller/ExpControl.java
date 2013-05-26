@@ -20,12 +20,12 @@ public class ExpControl {
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 
 		for (String key : mapExp.keySet()) {
-			double atributeCalculado = (mapExp.get(key)[2]) / (mapExp.get(key)[2]+mapControl.get(key)[2]);
+			double expv = mapExp.get(key)[2];
+			double contv = mapControl.get(key)[2];
+			double atributeCalculado = 0.0;
+			if (expv==0 && contv==0){continue;}   // ******************* fiz isso por causa dos zero dividido por zero
+			else{atributeCalculado = (expv) / (expv+contv);}
 			
-		/*	if (atributeCalculado.isNaN()){  // ******************* nao lembro porque fiz isso
-				atributeCalculado = 0.0000;
-			}*/
-				
 			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
 			
 			//System.out.println(mapExp.get(key)[2]+"\t"+mapControl.get(key)[2]+"\t"+atributeCalculado);//alter choks

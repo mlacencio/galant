@@ -9,7 +9,7 @@ import br.unesp.lbbc.util.Util;
 
 public class Smooth {
 
-public double[][] custom(int res, HashMap<String, double[]> original,double smooth,boolean boollog){
+public double[][] custom(int res, HashMap<String, double[]> original,double smooth){
 	
 			
 		int nvertices = original.size();  //number of original points
@@ -78,7 +78,7 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 	
 
 
-public double[][] gaussian(int res, HashMap<String, double[]> original,double sigma,boolean boollog){
+public double[][] gaussian(int res, HashMap<String, double[]> original,double sigma){
 			
 		int nvertices = original.size();  //number of original points
 		double[] cond = new double[nvertices]; // um vetor que indica a expressao de cada nodo
@@ -147,6 +147,28 @@ public double[][] gaussian(int res, HashMap<String, double[]> original,double si
 		
 		return matrix;
 	}
+
+
+public double[][] customEC(int res, HashMap<String, double[]> original,double smooth){
+
+
+	double [][] matrix = new double[res][res];
+	//double arg = 1.0/res;
+	for (int i = 0; i < res-1; i++) {
+		for (int j = 0; j < res-1; j++) {
+			double soma = 1.0;
+			double z = matrix[i][j];
+			for (double[] values: original.values()){
+				if (values[0]*res>=i && values[0]*res<(i+1) && values[1]*res>=j && values[1]*res<(j+1)){
+					z=z+values[2];
+					soma=soma+1;
+				}
+				if (soma>1){matrix[i][j]=z/(soma-1);}
+			}
+		}
+	}
+	return matrix;
+}
 
 	
 }

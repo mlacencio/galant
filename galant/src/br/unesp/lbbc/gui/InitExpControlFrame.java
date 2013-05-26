@@ -37,6 +37,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import com.jgoodies.forms.layout.Sizes;
 
 public class InitExpControlFrame extends JFrame {
 
@@ -49,7 +50,7 @@ public class InitExpControlFrame extends JFrame {
 	private JSplitPane splitPaneLeft; 
 	private JSplitPane splitPanelLeftTop;
 	private JPanel panelFunctions;
-	private JRadioButton rdbtnCustom;
+	private JRadioButton rdbtnCustom1;
 	private JLabel lblResolution;
 	private JRadioButton rdbtnGaussian;
 	private JButton btnDraw;
@@ -70,6 +71,7 @@ public class InitExpControlFrame extends JFrame {
 	private JCheckBox chckbxLog;
 	private JLabel lblSmoothness;
 	private JTextField tfSmooth;
+	private JRadioButton rdbtnCustom2;
 
 
 	/**
@@ -125,9 +127,9 @@ public class InitExpControlFrame extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
+				ColumnSpec.decode("max(50dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("min:grow"),
+				new ColumnSpec(ColumnSpec.FILL, Sizes.bounded(Sizes.PREFERRED, Sizes.constant("10dlu", true), Sizes.constant("15dlu", true)), 1),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -142,53 +144,58 @@ public class InitExpControlFrame extends JFrame {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
-		
-		rdbtnCustom = new JRadioButton("Custom");
-		rdbtnCustom.setSelected(true);
-		rdbtnCustom.setActionCommand("Custom");
-		buttonGroup.add(rdbtnCustom);
-		panelFunctions.add(rdbtnCustom, "2, 2");
-		
-		lblResolution = new JLabel("Resolution");
-		panelFunctions.add(lblResolution, "4, 2, right, default");
-		
-		tfCustom = new JTextField();
-		tfCustom.setMinimumSize(new Dimension(50, 22));
-		tfCustom.setText("100");
-		panelFunctions.add(tfCustom, "6, 2, fill, default");
-		tfCustom.setColumns(10);
-		
-		lblSmoothness = new JLabel("Smoothness");
-		panelFunctions.add(lblSmoothness, "4, 4, right, default");
-		
-		tfSmooth = new JTextField();
-		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("1.5");
-		panelFunctions.add(tfSmooth, "6, 4, fill, default");
-		tfSmooth.setColumns(10);
-		
 		rdbtnGaussian = new JRadioButton("Gaussian");
 		rdbtnGaussian.setActionCommand("Gaussian");
 		buttonGroup.add(rdbtnGaussian);
-		panelFunctions.add(rdbtnGaussian, "2, 6");
+		panelFunctions.add(rdbtnGaussian, "2, 2");
 		
 		JLabel lblSigma = new JLabel("Sigma");
-		panelFunctions.add(lblSigma, "4, 6, right, default");
+		panelFunctions.add(lblSigma, "4, 2, right, default");
 		
 		tfGaussian = new JTextField();
 		tfGaussian.setMinimumSize(new Dimension(50, 22));
 		tfGaussian.setText("0.05");
 		tfGaussian.setEnabled(false);
 		
-		panelFunctions.add(tfGaussian, "6, 6, fill, default");
+		panelFunctions.add(tfGaussian, "6, 2, fill, default");
 		tfGaussian.setColumns(10);
+		
+		
+		rdbtnCustom1 = new JRadioButton("Custom1");
+		rdbtnCustom1.setSelected(true);
+		rdbtnCustom1.setActionCommand("Custom1");
+		buttonGroup.add(rdbtnCustom1);
+		panelFunctions.add(rdbtnCustom1, "2, 4");
+		
+		lblSmoothness = new JLabel("Smooth");
+		panelFunctions.add(lblSmoothness, "4, 4, right, default");
+		
+		tfSmooth = new JTextField();
+		tfSmooth.setToolTipText("Only integer");
+		tfSmooth.setText("3");
+		panelFunctions.add(tfSmooth, "6, 4, fill, default");
+		tfSmooth.setColumns(10);
 		
 		checkBox2D = new JCheckBox("2D");
 		checkBox2D.setSelected(true);
+		
+		rdbtnCustom2 = new JRadioButton("Custom2");
+		rdbtnCustom2.setActionCommand("Custom2");
+		buttonGroup.add(rdbtnCustom2);
+		panelFunctions.add(rdbtnCustom2, "2, 6");
+		
+		lblResolution = new JLabel("Resolution");
+		panelFunctions.add(lblResolution, "4, 6, right, default");
+		
+		tfCustom = new JTextField();
+		tfCustom.setMinimumSize(new Dimension(50, 22));
+		tfCustom.setText("100");
+		panelFunctions.add(tfCustom, "6, 6, fill, default");
+		tfCustom.setColumns(10);
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
 		chckbxLog = new JCheckBox("log");
-		panelFunctions.add(chckbxLog, "4, 8");
+		panelFunctions.add(chckbxLog, "2, 8");
 		
 		btnDraw = new JButton("DRAW");
 		
@@ -225,10 +232,12 @@ public class InitExpControlFrame extends JFrame {
 		btnDraw.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				SurfacePanel sp = new SurfacePanel();
-				String function = buttonGroup.getSelection().getActionCommand();
-				String at1 = jListAttExp.getAtt();
-				String at2 = jListAttControl.getAtt();
+				 SurfacePanel sp = new SurfacePanel();
+				 String function = buttonGroup.getSelection().getActionCommand();//getFunctionString();
+				 int res = Integer.parseInt(tfCustom.getText());
+				 boolean log = chckbxLog.isSelected();
+				 String at1 = jListAttExp.getAtt();
+				 String at2 = jListAttControl.getAtt();
 				
 				
 				if (function=="Gaussian"){
@@ -245,7 +254,7 @@ public class InitExpControlFrame extends JFrame {
 						//e1.printStackTrace();
 					}	
 				}
-				else if (function=="Custom"){
+				else if (function=="Custom2"){ //CUSTOM DO NEY
 					double smooth = Double.parseDouble(tfSmooth.getText());
 					
 					try {
@@ -257,6 +266,21 @@ public class InitExpControlFrame extends JFrame {
 						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
 						//e1.printStackTrace();
 					}
+				}
+				else if (function=="Custom1"){ //CUSTOM DA ESTHER
+					
+					double smooth = Double.parseDouble(tfSmooth.getText());
+					
+					try {
+						
+						setSurfacePanel(sp.drawCustomEC(at1, at2, res, smooth, log));
+						btnExport.setEnabled(true);
+						
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(null,"Select attribute and draw again ");
+						//e1.printStackTrace();
+					}
+				
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Select Custom or Gaussian");
@@ -276,7 +300,7 @@ public class InitExpControlFrame extends JFrame {
 		});
 		
 		
-		rdbtnCustom.addActionListener(new ActionListener() {
+		rdbtnCustom1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(true);
