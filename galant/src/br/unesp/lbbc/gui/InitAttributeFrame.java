@@ -67,6 +67,8 @@ public class InitAttributeFrame extends JFrame {
 	private JTextField tfSmooth;
 	private JCheckBox chckbxLog;
 	private JRadioButton rdbtnCustom2;
+	private JLabel lblExponent;
+	private JTextField tfPowerLaw;
 
 		/**
 	 * Create the frame.
@@ -131,6 +133,7 @@ public class InitAttributeFrame extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
 		rdbtnGaussian = new JRadioButton("Gaussian");
+		rdbtnGaussian.setSelected(true);
 		rdbtnGaussian.setActionCommand("Gaussian");
 		buttonGroup.add(rdbtnGaussian);
 		panelFunctions.add(rdbtnGaussian, "2, 2");
@@ -143,44 +146,53 @@ public class InitAttributeFrame extends JFrame {
 		tfGaussian.setText("0.05");
 		panelFunctions.add(tfGaussian, "6, 2, fill, default");
 		tfGaussian.setColumns(10);
-		tfGaussian.setEnabled(false);
 		
 		
-		rdbtnCustom1 = new JRadioButton("Custom1");
+		rdbtnCustom1 = new JRadioButton("Mov.Average");
 		rdbtnCustom1.setActionCommand("Custom1");
-		rdbtnCustom1.setSelected(true);
 		buttonGroup.add(rdbtnCustom1);
 		panelFunctions.add(rdbtnCustom1, "2, 4");
 		
 		checkBox2D = new JCheckBox("2D");
 		checkBox2D.setSelected(true);
 		
-		lblSmoothness = new JLabel("Smooth");
+		lblSmoothness = new JLabel("Smoothness");
 		panelFunctions.add(lblSmoothness, "4, 4, right, default");
 		
 		tfSmooth = new JTextField();
 		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("3");
+		tfSmooth.setText("6");
 		panelFunctions.add(tfSmooth, "6, 4, fill, default");
 		tfSmooth.setColumns(10);
+		tfSmooth.setEnabled(false);
 		
-		rdbtnCustom2 = new JRadioButton("Custom2");
+		rdbtnCustom2 = new JRadioButton("Power Law");
 		rdbtnCustom2.setActionCommand("Custom2");
 		buttonGroup.add(rdbtnCustom2);
 		panelFunctions.add(rdbtnCustom2, "2, 6");
 		
+		lblExponent = new JLabel("Exponent");
+		panelFunctions.add(lblExponent, "4, 6, right, default");
+		
+		tfPowerLaw = new JTextField();
+		tfPowerLaw.setText("3");
+		tfPowerLaw.setEnabled(false);
+		panelFunctions.add(tfPowerLaw, "6, 6, fill, default");
+		tfPowerLaw.setColumns(10);
+		
+		chckbxLog = new JCheckBox("log");
+		chckbxLog.setEnabled(false);
+		chckbxLog.setToolTipText("Select if data are already in log");
+		panelFunctions.add(chckbxLog, "2, 8");
+		
 		lblResolution = new JLabel("Resolution");
-		panelFunctions.add(lblResolution, "4, 6, right, default");
+		panelFunctions.add(lblResolution, "4, 8, right, default");
 		
 		tfCustom = new JTextField();
 		tfCustom.setMinimumSize(new Dimension(50, 22));
 		tfCustom.setText("100");
-		panelFunctions.add(tfCustom, "6, 6, fill, default");
+		panelFunctions.add(tfCustom, "6, 8, fill, default");
 		tfCustom.setColumns(10);
-		
-		chckbxLog = new JCheckBox("log");
-		chckbxLog.setToolTipText("Select if data are already in log");
-		panelFunctions.add(chckbxLog, "2, 8");
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
 		btnDraw = new JButton("DRAW");
@@ -197,7 +209,7 @@ public class InitAttributeFrame extends JFrame {
 		contentPane.add(frmtdtxtfldLbbcLaboratrio, BorderLayout.SOUTH);
 
 		btnExport = new JButton("");
-		btnExport.setToolTipText("Export Image JPG");
+		btnExport.setToolTipText("Export Image");
 		btnExport.setEnabled(false);
 		
 		btnExport.setIcon(new ImageIcon(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/export.png")));
@@ -248,7 +260,7 @@ public class InitAttributeFrame extends JFrame {
 				
 				else if (function=="Custom2"){ //CUSTOM DO NEY
 					
-					double smooth = Double.parseDouble(tfSmooth.getText());
+					double smooth = Double.parseDouble(tfPowerLaw.getText());
 					
 					try {
 						
@@ -283,6 +295,7 @@ public class InitAttributeFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(true);
+				tfPowerLaw.setEnabled(false);
 				tfGaussian.setEnabled(false);			
 				
 			}
@@ -293,9 +306,20 @@ public class InitAttributeFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(false);
 				tfGaussian.setEnabled(true);
+				tfPowerLaw.setEnabled(false);
 				
 			}
 		});
+		rdbtnCustom2.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfPowerLaw.setEnabled(true);
+				tfGaussian.setEnabled(false);
+				tfSmooth.setEnabled(false);
+				
+			}
+		});
+		
 	}
 		
 	private void exportFile() throws IOException {

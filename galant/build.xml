@@ -9,6 +9,7 @@
             </manifest>
             <fileset dir="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/forms-1.3.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/0-DOUTORADO/TRABALHO/Galant/software/galant/lib/flanagan.jar"/>
         </jar>
     </target>
 </project>

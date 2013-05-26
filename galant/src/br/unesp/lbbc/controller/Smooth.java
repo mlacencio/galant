@@ -3,7 +3,6 @@ package br.unesp.lbbc.controller;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import br.unesp.lbbc.util.Util;
 
 /** Get one HasMap - calculate others points (spline) and then return a new map */
 

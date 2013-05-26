@@ -72,6 +72,8 @@ public class InitExpControlFrame extends JFrame {
 	private JLabel lblSmoothness;
 	private JTextField tfSmooth;
 	private JRadioButton rdbtnCustom2;
+	private JLabel lblExp;
+	private JTextField tfPowerLaw;
 
 
 	/**
@@ -129,7 +131,7 @@ public class InitExpControlFrame extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(50dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				new ColumnSpec(ColumnSpec.FILL, Sizes.bounded(Sizes.PREFERRED, Sizes.constant("10dlu", true), Sizes.constant("15dlu", true)), 1),
+				ColumnSpec.decode("max(20dlu;pref):grow"),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -147,6 +149,7 @@ public class InitExpControlFrame extends JFrame {
 		rdbtnGaussian = new JRadioButton("Gaussian");
 		rdbtnGaussian.setActionCommand("Gaussian");
 		buttonGroup.add(rdbtnGaussian);
+		rdbtnGaussian.setSelected(true);
 		panelFunctions.add(rdbtnGaussian, "2, 2");
 		
 		JLabel lblSigma = new JLabel("Sigma");
@@ -155,47 +158,56 @@ public class InitExpControlFrame extends JFrame {
 		tfGaussian = new JTextField();
 		tfGaussian.setMinimumSize(new Dimension(50, 22));
 		tfGaussian.setText("0.05");
-		tfGaussian.setEnabled(false);
+	
 		
 		panelFunctions.add(tfGaussian, "6, 2, fill, default");
 		tfGaussian.setColumns(10);
 		
+		checkBox2D = new JCheckBox("2D");
+		checkBox2D.setSelected(true);
 		
-		rdbtnCustom1 = new JRadioButton("Custom1");
-		rdbtnCustom1.setSelected(true);
+		rdbtnCustom1 = new JRadioButton("Mov.Average");
 		rdbtnCustom1.setActionCommand("Custom1");
 		buttonGroup.add(rdbtnCustom1);
 		panelFunctions.add(rdbtnCustom1, "2, 4");
 		
-		lblSmoothness = new JLabel("Smooth");
+		lblSmoothness = new JLabel("Smoothness");
 		panelFunctions.add(lblSmoothness, "4, 4, right, default");
 		
 		tfSmooth = new JTextField();
 		tfSmooth.setToolTipText("Only integer");
-		tfSmooth.setText("3");
+		tfSmooth.setText("6");
+		tfSmooth.setEnabled(false);
 		panelFunctions.add(tfSmooth, "6, 4, fill, default");
 		tfSmooth.setColumns(10);
 		
-		checkBox2D = new JCheckBox("2D");
-		checkBox2D.setSelected(true);
 		
-		rdbtnCustom2 = new JRadioButton("Custom2");
+		rdbtnCustom2 = new JRadioButton("Power Law");
+		panelFunctions.add(rdbtnCustom2, "2, 6");
 		rdbtnCustom2.setActionCommand("Custom2");
 		buttonGroup.add(rdbtnCustom2);
-		panelFunctions.add(rdbtnCustom2, "2, 6");
 		
-		lblResolution = new JLabel("Resolution");
-		panelFunctions.add(lblResolution, "4, 6, right, default");
+		lblExp = new JLabel("Exponent");
+		panelFunctions.add(lblExp, "4, 6, right, default");
 		
-		tfCustom = new JTextField();
-		tfCustom.setMinimumSize(new Dimension(50, 22));
-		tfCustom.setText("100");
-		panelFunctions.add(tfCustom, "6, 6, fill, default");
-		tfCustom.setColumns(10);
+		tfPowerLaw = new JTextField();
+		tfPowerLaw.setEnabled(false);
+		panelFunctions.add(tfPowerLaw, "6, 6, fill, default");
+		tfPowerLaw.setColumns(10);
+		tfPowerLaw.setText("3");
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
 		chckbxLog = new JCheckBox("log");
 		panelFunctions.add(chckbxLog, "2, 8");
+		
+		lblResolution = new JLabel("Resolution");
+		panelFunctions.add(lblResolution, "4, 8, right, default");
+		
+		tfCustom = new JTextField();
+		tfCustom.setMinimumSize(new Dimension(50, 22));
+		tfCustom.setText("100");
+		panelFunctions.add(tfCustom, "6, 8, fill, default");
+		tfCustom.setColumns(10);
 		
 		btnDraw = new JButton("DRAW");
 		
@@ -211,7 +223,7 @@ public class InitExpControlFrame extends JFrame {
 		contentPane.add(frmtdtxtfldLbbcLaboratrio, BorderLayout.SOUTH);
 
 		btnExport = new JButton("");
-		btnExport.setToolTipText("Export Image JPG");
+		btnExport.setToolTipText("Export Image");
 		
 		btnExport.setIcon(new ImageIcon(InitExpControlFrame.class.getResource("/br/unesp/lbbc/main/export.png")));
 		toolBar.add(btnExport);
@@ -255,7 +267,7 @@ public class InitExpControlFrame extends JFrame {
 					}	
 				}
 				else if (function=="Custom2"){ //CUSTOM DO NEY
-					double smooth = Double.parseDouble(tfSmooth.getText());
+					double smooth = Double.parseDouble(tfPowerLaw.getText());
 					
 					try {
 						setSurfacePanel(sp.drawCustom(at1,at2, Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
@@ -304,7 +316,18 @@ public class InitExpControlFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(true);
-				tfGaussian.setEnabled(false);			
+				tfGaussian.setEnabled(false);	
+				tfPowerLaw.setEnabled(false);
+				
+			}
+		});
+		
+		rdbtnCustom2.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tfSmooth.setEnabled(false);
+				tfGaussian.setEnabled(false);	
+				tfPowerLaw.setEnabled(true);
 				
 			}
 		});
@@ -314,6 +337,7 @@ public class InitExpControlFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tfSmooth.setEnabled(false);
 				tfGaussian.setEnabled(true);
+				tfPowerLaw.setEnabled(false);
 				
 			}
 		});

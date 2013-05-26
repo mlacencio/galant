@@ -652,8 +652,8 @@ public class HeatMap extends JPanel
                 g2d.fillRect(width - 19, yStart, 9, 1);
                 
 
-                g2d.setColor(Color.BLACK);new Font("Arial", Font.BOLD, 16);  
-                g2d.setFont(new Font("Arial", Font.BOLD, 16));
+                g2d.setColor(Color.BLACK);//new Font("Arial", Font.BOLD, 16);  
+                g2d.setFont(new Font("Times New Roman", Font.BOLD, 16));
                 g2d.drawString(new String("0"), width-7,height - 23 );
                 g2d.drawString(new String("1"), width-7,height - height + 35 );
                 

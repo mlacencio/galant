@@ -4,18 +4,18 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import flanagan.analysis.SurfaceSmooth;
 import br.unesp.lbbc.controller.ExpControl;
 import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
 import br.unesp.lbbc.util.Gradient;
 import br.unesp.lbbc.util.HeatMap;
 import br.unesp.lbbc.util.Util;
-import br.unesp.lbbc.util.subdivision.CCSurface;
+import flanagan.analysis.SurfaceSmooth;
 
 /**
  * To draw the surface it's needed to know what attribute and function
@@ -98,6 +98,10 @@ public class SurfacePanel {
 		hash = Util.Normalize(hash);
 		double[][] matrix = sp.custom(res, hash, smooth);
 
+		//que tal normalizar a matriz antes de colocar aqui? nao precisa, deu na mesma
+		//matrix = Util.normalizeDouble(matrix);
+		System.out.println("nao ta mais normalizando");
+		
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
 		HM.setDrawLegend(true);
 

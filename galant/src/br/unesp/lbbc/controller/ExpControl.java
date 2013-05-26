@@ -23,14 +23,20 @@ public class ExpControl {
 			double expv = mapExp.get(key)[2];
 			double contv = mapControl.get(key)[2];
 			double atributeCalculado = 0.0;
-			if (expv==0 && contv==0){continue;}   // ******************* fiz isso por causa dos zero dividido por zero
-			else{atributeCalculado = (expv) / (expv+contv);}
+			if (expv==0 && contv==0){
+				double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
+				newMap.put(key,valores);
+			}   // ******************* fiz isso por causa dos zero dividido por zero
+			else{atributeCalculado = (expv) / (expv+contv);
+				double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
+				newMap.put(key,valores);
+			}
 			
-			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
+			
 			
 			//System.out.println(mapExp.get(key)[2]+"\t"+mapControl.get(key)[2]+"\t"+atributeCalculado);//alter choks
 			
-			newMap.put(key,valores);
+			
 			
 			 
 		}
