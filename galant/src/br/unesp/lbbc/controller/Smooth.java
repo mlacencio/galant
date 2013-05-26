@@ -3,7 +3,6 @@ package br.unesp.lbbc.controller;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import br.unesp.lbbc.util.Util;
 
 /** Get one HasMap - calculate others points (spline) and then return a new map */
@@ -32,7 +31,7 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 				coords[kk][0]=0.1+0.8*coords[kk][0];
 				coords[kk][1]=0.1+0.8*coords[kk][1];
 				
-				if(boollog){
+		/*		if(boollog){
 					if(value[2]==0){
 						cond[kk]=0;
 						//System.out.println(cond[kk]);
@@ -43,9 +42,11 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 				}else{
 					cond[kk]=value[2];
 				}
+				*/
+				cond[kk]=value[2];
 				kk++;
 		    }
-		
+		    
 		for (int i=0;i<res;i++){     
 		        for (int j=0;j<res;j++){
 		        	double sumdist = 0;
@@ -71,8 +72,8 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 		
 		
 		
-		
-		return Util.normalizeDouble(matrix);
+		return matrix;
+		//return Util.normalizeDouble(matrix);
 	}
 	
 
@@ -99,7 +100,7 @@ public double[][] gaussian(int res, HashMap<String, double[]> original,double si
 				coords[kk][1]= 1-value[1];
 				coords[kk][0]=0.1+0.8*coords[kk][0];
 				coords[kk][1]=0.1+0.8*coords[kk][1];
-				if(boollog){
+		/*		if(boollog){
 					if(value[2]==0){
 						cond[kk]=0;
 						//System.out.println(cond[kk]);
@@ -109,7 +110,8 @@ public double[][] gaussian(int res, HashMap<String, double[]> original,double si
 					}
 				}else{
 					cond[kk]=value[2];
-				}
+				}*/
+				cond[kk]=value[2];
 				mediacond = mediacond + cond[kk];
 				kk++;
 		    }

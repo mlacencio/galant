@@ -237,7 +237,7 @@ public class InitExpControlFrame extends JFrame {
 						double sigma = Double.parseDouble(tfGaussian.getText());
 						int te = Integer.parseInt(tfCustom.getText());
 						
-						setSurfacePanel(sp.drawGaussianEC(at1,at2, checkBox2D.isSelected(),te,sigma,chckbxLog.isSelected()));
+						setSurfacePanel(sp.drawGaussian(at1,at2,te,sigma,chckbxLog.isSelected()));
 						btnExport.setEnabled(true);
 						
 					} catch (NullPointerException e1) {
@@ -249,7 +249,7 @@ public class InitExpControlFrame extends JFrame {
 					double smooth = Double.parseDouble(tfSmooth.getText());
 					
 					try {
-						setSurfacePanel(sp.drawCustomEC(at1,at2, checkBox2D.isSelected(), Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
+						setSurfacePanel(sp.drawCustom(at1,at2, Integer.parseInt(tfCustom.getText()),smooth,chckbxLog.isSelected()));
 						btnExport.setEnabled(true);
 					
 						

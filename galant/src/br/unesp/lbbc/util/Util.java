@@ -111,9 +111,9 @@ public class Util {
 				
 				for (int i = 0; i < nmesh.length; i++) {
 					for (int j = 0; j < nmesh.length; j++) {
-						nmesh[i][j][0]=(float) (vx/(mesh[i][j][0]-xmin));
-						nmesh[i][j][1]=(float) (vy/(mesh[i][j][1]-ymin));
-						nmesh[i][j][2]=(float) (vz/(mesh[i][j][2]-zmin));
+						nmesh[i][j][0]=(float) (mesh[i][j][0]-xmin)/vx;
+						nmesh[i][j][1]=(float) (mesh[i][j][1]-ymin)/vy;
+						nmesh[i][j][2]=(float) (mesh[i][j][2]-zmin)/vz;
 						
 					}
 				}

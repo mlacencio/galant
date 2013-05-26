@@ -19,8 +19,8 @@ import br.unesp.lbbc.util.subdivision.CCSurface;
  * To draw the surface it's needed to know what attribute and function
  * */
 
-public class SurfacePanel extends JPanel {
-
+//public class SurfacePanel extends JPanel {
+public class SurfacePanel {
 	/**
 	 * 
 	 */
@@ -29,7 +29,7 @@ public class SurfacePanel extends JPanel {
 
 	public SurfacePanel() {
 
-		setLayout(new BorderLayout());
+	//setLayout(new BorderLayout());
 
 	}
 
@@ -38,8 +38,7 @@ public class SurfacePanel extends JPanel {
 	 * the boolean log is true, but it won't be used.
 	 * */
 
-	public JPanel drawGaussianEC(String at1, String at2, boolean isSelected2D,
-			int res, double sigma, boolean log) {
+	public JPanel drawGaussian(String at1, String at2,int res, double sigma, boolean log) {
 		Mapping map = new Mapping();
 		HashMap<String, double[]> hash;
 		Smooth sp = new Smooth();
@@ -48,10 +47,12 @@ public class SurfacePanel extends JPanel {
 			hash = map.getCompleteHash(at1, log);
 		} else {
 			ExpControl expControl = new ExpControl();
-			hash = expControl.calcule(at1, at2);
-
+			hash = expControl.calcule(at1, at2,log);
 		}
 
+		//normaliza o hashmap aqui
+		hash = Util.Normalize(hash);
+		
 		double[][] matrix = sp.gaussian(res, hash, sigma, log);
 
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
@@ -73,8 +74,7 @@ public class SurfacePanel extends JPanel {
 
 	}
 
-	public JPanel drawCustomEC(String at1, String at2, boolean isSelected2D,
-			int res, double smooth, boolean log) {
+	public JPanel drawCustom(String at1, String at2, int res, double smooth, boolean log) {
 		Mapping map = new Mapping();
 		HashMap<String, double[]> hash;
 		Smooth sp = new Smooth();
@@ -83,10 +83,12 @@ public class SurfacePanel extends JPanel {
 			hash = map.getCompleteHash(at1, log);
 		} else {
 			ExpControl expControl = new ExpControl();
-			hash = expControl.calcule(at1, at2);
+			hash = expControl.calcule(at1, at2,log);
 
 		}
 
+		hash = Util.Normalize(hash);
+		
 		double[][] matrix = sp.custom(res, hash, smooth, log);
 
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
@@ -107,8 +109,17 @@ public class SurfacePanel extends JPanel {
 		return sswp;
 	}
 
+	
+	public static void screenshot(String filename) throws IOException {
+		File output = new File(filename);
+
+		if (!output.getParentFile().exists())
+			output.mkdirs();
+		ImageIO.write(HM.screenshot(), "png", output);
+		JOptionPane.showMessageDialog(null, "Successfully saved");
+	}
 	// Choks
-	public JPanel drawGaussian(String at1, String at2, int res, double sigma,
+/*	public JPanel drawGaussian(String at1, String at2, int res, double sigma,
 			boolean log) {
 
 		Mapping map = new Mapping();
@@ -162,14 +173,7 @@ public class SurfacePanel extends JPanel {
 		return sswp;
 	}
 
-	public static void screenshot(String filename) throws IOException {
-		File output = new File(filename);
-
-		if (!output.getParentFile().exists())
-			output.mkdirs();
-		ImageIO.write(HM.screenshot(), "png", output);
-		JOptionPane.showMessageDialog(null, "Successfully saved");
-	}
+	
 
 	
 	//mudar para catmull
@@ -252,5 +256,5 @@ public class SurfacePanel extends JPanel {
 		
 		return nmesh;
 	}
-
+*/
 }

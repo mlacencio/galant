@@ -164,25 +164,23 @@ public class Mapping {
 		for (String key : coor.keySet()) {
 
 			Double terceiraColuna = att.get(key);
+		//dados de expressao vem em log na base 2	
+			//sempre tiro o log e converto em numero normal
 			if (terceiraColuna != null) {
+				if (!isLog){
 				double xyz[] = { coor.get(key)[0], coor.get(key)[1],terceiraColuna };
-				completHash.put(key, xyz);
+				completHash.put(key, xyz);}
+				else{double xyz[] = { coor.get(key)[0], coor.get(key)[1],Math.pow(2,terceiraColuna) }; //tira o log de base 2
+				completHash.put(key, xyz);}
 			} else {
-
-				if (!isLog) {
-					double xyz[] = { coor.get(key)[0], coor.get(key)[1], 0 };   //if is NOT log, the missing are zero
+					double xyz[] = { coor.get(key)[0], coor.get(key)[1], 0 };   //the missing are zero
 					completHash.put(key, xyz);
-				} else {
-					double xyz[] = { coor.get(key)[0], coor.get(key)[1], 1 };   //if is log, the missing value 1
-					completHash.put(key, xyz);
-				}
-
 			}
 		}
 
-		HashMap<String, double[]> completHashNormalized = Util.Normalize(completHash);
+	//	HashMap<String, double[]> completHashNormalized = Util.Normalize(completHash);
 
-		return completHashNormalized;
+		return completHash;
 
 	}
 

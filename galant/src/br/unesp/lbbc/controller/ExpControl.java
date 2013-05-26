@@ -2,6 +2,8 @@ package br.unesp.lbbc.controller;
 
 import java.util.HashMap;
 
+import br.unesp.lbbc.util.Util;
+
 public class ExpControl {
 
 	Mapping mapping = new Mapping();
@@ -11,18 +13,18 @@ public class ExpControl {
 	 * It takes the z-exp and the z-control, calculate alpha = (z-exp) / z-exp  -  z-control).
 	 *  Returns a HashMap
 	 * */
-	public HashMap<String,double[]> calcule(String exp, String control) {
-		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp,false);
-		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control,false);
+	public HashMap<String,double[]> calcule(String exp, String control,boolean isLog) {
+		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp,isLog);
+		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control,isLog);
 		
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 
 		for (String key : mapExp.keySet()) {
-			Double atributeCalculado = (mapExp.get(key)[2]) / (mapExp.get(key)[2]+mapControl.get(key)[2]);
+			double atributeCalculado = (mapExp.get(key)[2]) / (mapExp.get(key)[2]+mapControl.get(key)[2]);
 			
-			if (atributeCalculado.isNaN()){
-				atributeCalculado = 0.0001;
-			}
+		/*	if (atributeCalculado.isNaN()){  // ******************* nao lembro porque fiz isso
+				atributeCalculado = 0.0000;
+			}*/
 				
 			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado};
 			
@@ -35,21 +37,7 @@ public class ExpControl {
 		return newMap;
 	}
 	
-	public HashMap<String,double[]> calculeLog(String exp, String control, boolean isLog) {
-		HashMap<String, double[]> mapExp = mapping.getCompleteHash(exp,isLog);
-		HashMap<String, double[]> mapControl = mapping.getCompleteHash(control,isLog);
 
-		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
-
-		for (String key : mapExp.keySet()) {
-				
-			Double atributeCalculado = (mapExp.get(key)[2]-mapControl.get(key)[2]);
-			double[] valores = { mapExp.get(key)[0], mapExp.get(key)[1],atributeCalculado };
-			newMap.put(key,valores);
-			
-		}
-		return newMap;
-	}
 	
 
 }
