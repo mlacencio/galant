@@ -45,10 +45,10 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 				cond[kk]=value[2];
 				kk++;
 		    }
-		    
+		    double sumdist = 0;
 		for (int i=0;i<res;i++){     
 		        for (int j=0;j<res;j++){
-		        	double sumdist = 0;
+		        	//double sumdist = 0;
 		             for (int k=0; k<nvertices; k++){
 		            	 	double a = coords[k][0]*res-i;
 		            	 	double b = coords[k][1]*res-j;
@@ -65,9 +65,15 @@ public double[][] custom(int res, HashMap<String, double[]> original,double smoo
 		             for (int k=0; k<nvertices; k++){
 		            	matrix[i][j]+=cond[k]/dist[k];
 		             }
-		             matrix[i][j]=matrix[i][j]/sumdist;
+		            // matrix[i][j]=matrix[i][j]/1;//sumdist;
+		              
 		        }
-		}
+		        
+		}for (int i=0;i<res;i++){     
+		        for (int j=0;j<res;j++){
+		        	
+		        	matrix[i][j]=matrix[i][j]/sumdist;
+		        }}
 		
 		
 		
@@ -152,18 +158,19 @@ public double[][] customEC(int res, HashMap<String, double[]> original,double sm
 
 
 	double [][] matrix = new double[res][res];
-	//double arg = 1.0/res;
-	for (int i = 0; i < res-1; i++) {
-		for (int j = 0; j < res-1; j++) {
+	
+	for (int i = 0; i < res; i++) {
+		for (int j = 0; j < res; j++) {
 			double soma = 1.0;
 			double z = matrix[i][j];
 			for (double[] values: original.values()){
-				if (values[0]*res>=i && values[0]*res<(i+1) && values[1]*res>=j && values[1]*res<(j+1)){
+				if (((values[0]*res)>=(i*1.0) && (values[0]*res)<=(i*1.0+1.0)) && ((values[1]*res)>=(j*1.0) && (values[1]*res)<=(j*1.0+1.0))){
 					z=z+values[2];
 					soma=soma+1;
 				}
-				if (soma>1){matrix[i][j]=z/(soma-1);}
 			}
+			if (soma>1){matrix[i][j]=z/(soma-1);}
+			else{matrix[i][j]=z;}
 		}
 	}
 	return matrix;
