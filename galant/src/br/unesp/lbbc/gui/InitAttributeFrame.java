@@ -74,6 +74,7 @@ public class InitAttributeFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public InitAttributeFrame() {
+			setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravataIco.png")));
 		setMinimumSize(new Dimension(800, 600));
 		setLookAndFeel();
 		//setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/icone.jpg")));
@@ -175,7 +176,7 @@ public class InitAttributeFrame extends JFrame {
 		panelFunctions.add(lblExponent, "4, 6, right, default");
 		
 		tfPowerLaw = new JTextField();
-		tfPowerLaw.setText("3");
+		tfPowerLaw.setText("0.3");
 		tfPowerLaw.setEnabled(false);
 		panelFunctions.add(tfPowerLaw, "6, 6, fill, default");
 		tfPowerLaw.setColumns(10);

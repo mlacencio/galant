@@ -82,7 +82,7 @@ public class InitExpControlFrame extends JFrame {
 	public InitExpControlFrame() {
 		setMinimumSize(new Dimension(800, 600));
 		setLookAndFeel();
-		//setIconImage(Toolkit.getDefaultToolkit().getImage(InitExpControlFrame.class.getResource("/br/unesp/lbbc/main/icone.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravataIco.png")));
 		setTitle("Galant - Experiment X Control");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -194,7 +194,7 @@ public class InitExpControlFrame extends JFrame {
 		tfPowerLaw.setEnabled(false);
 		panelFunctions.add(tfPowerLaw, "6, 6, fill, default");
 		tfPowerLaw.setColumns(10);
-		tfPowerLaw.setText("3");
+		tfPowerLaw.setText("0.3");
 		//panelFunctions.add(checkBox2D, "2, 8");
 		
 		chckbxLog = new JCheckBox("log");
