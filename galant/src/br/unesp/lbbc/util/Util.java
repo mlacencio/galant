@@ -43,13 +43,13 @@ public class Util {
 		HashMap<String, double[]> newMap = new HashMap<String, double[]>();
 
 		for (String key : map.keySet()) {
-			double newX = ((map.get(key)[0]) - xmin) / (xmax - xmin);
-			double newY = ((map.get(key)[1]) - ymin) / (ymax - ymin);
-			double newZ = (((map.get(key)[2]) - zmin) / (zmax - zmin));
-			double[] newCoord = { newX, newY, newZ };
+			double newX = (0.8*((map.get(key)[0]) - xmin) / (xmax - xmin))+0.1;
+			double newY = (0.8*((map.get(key)[1]) - ymin) / (ymax - ymin))+0.1;
+			//double newZ = (((map.get(key)[2]) - zmin) / (zmax - zmin));
+			//double[] newCoord = { newX, newY, newZ };
 
 			// use this line to NOT normalize the attribute
-			//double[] newCoord = { newX, newY, map.get(key)[2] };
+			double[] newCoord = { newX, newY, map.get(key)[2] };
 
 			newMap.put(key, newCoord);
 
@@ -77,7 +77,8 @@ public class Util {
 		}
 		for (int k = 0; k < data.length; k++) {
 			for (int l = 0; l < data.length; l++) {
-				data[k][l] = (((data[k][l]) - min) / (max - min));
+				data[k][l] = (0.9*(((data[k][l]) - min) / (max - min)))+0.1;   //agora normaliza de 0.1 a 1
+			//	data[k][l] = (((data[k][l]) - min) / (max - min));
 			}
 		}
 

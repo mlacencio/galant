@@ -305,7 +305,9 @@ public class SurfacePanel {
 		
 		SurfaceSmooth smoothness = new SurfaceSmooth(matrix);
 		matrix = smoothness.movingAverage((int) smooth);
-		//matrix = Util.normalizeDouble(matrix);
+		
+		
+	//	matrix = Util.normalizeDouble(matrix);
 		
 		
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);

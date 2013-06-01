@@ -99,8 +99,8 @@ public class Smooth {
 			double[] value = original.get(itr.next());
 			coords[kk][0] = value[0];
 			coords[kk][1] = 1 - value[1];
-			coords[kk][0] = 0.1 + 0.8 * coords[kk][0];
-			coords[kk][1] = 0.1 + 0.8 * coords[kk][1];
+		//	coords[kk][0] = 0.1 + 0.8 * coords[kk][0];
+		//	coords[kk][1] = 0.1 + 0.8 * coords[kk][1];
 			/*
 			 * if(boollog){ if(value[2]==0){ cond[kk]=0;
 			 * //System.out.println(cond[kk]); }else{

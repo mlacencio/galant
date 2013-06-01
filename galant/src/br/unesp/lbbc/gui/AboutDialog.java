@@ -13,7 +13,7 @@ public class AboutDialog extends JDialog {
 		
 		
 		setTitle("About");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravataIco.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravata.png")));
 		JLabel label = new JLabel(new ImageIcon(AboutDialog.class.getResource("/br/unesp/lbbc/main/about.jpg"))); 
 		label.setPreferredSize(new Dimension(800,500));
 		

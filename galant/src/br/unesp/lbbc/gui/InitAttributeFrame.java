@@ -74,7 +74,7 @@ public class InitAttributeFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public InitAttributeFrame() {
-			setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravataIco.png")));
+			setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravata.png")));
 		setMinimumSize(new Dimension(800, 600));
 		setLookAndFeel();
 		//setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/icone.jpg")));
@@ -182,7 +182,7 @@ public class InitAttributeFrame extends JFrame {
 		tfPowerLaw.setColumns(10);
 		
 		chckbxLog = new JCheckBox("log");
-		chckbxLog.setEnabled(false);
+		//chckbxLog.setEnabled(false);
 		chckbxLog.setToolTipText("Select if data are already in log");
 		panelFunctions.add(chckbxLog, "2, 8");
 		

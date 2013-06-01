@@ -82,7 +82,7 @@ public class InitExpControlFrame extends JFrame {
 	public InitExpControlFrame() {
 		setMinimumSize(new Dimension(800, 600));
 		setLookAndFeel();
-		setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravataIco.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InitAttributeFrame.class.getResource("/br/unesp/lbbc/main/gravata.png")));
 		setTitle("Galant - Experiment X Control");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
