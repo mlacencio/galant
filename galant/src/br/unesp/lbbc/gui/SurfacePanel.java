@@ -14,8 +14,9 @@ import br.unesp.lbbc.controller.Mapping;
 import br.unesp.lbbc.controller.Smooth;
 import br.unesp.lbbc.util.Gradient;
 import br.unesp.lbbc.util.HeatMap;
+import br.unesp.lbbc.util.SurfSmooth;
 import br.unesp.lbbc.util.Util;
-import flanagan.analysis.SurfaceSmooth;
+import br.unesp.lbbc.util.SurfaceSmooth;
 
 /**
  * To draw the surface it's needed to know what attribute and function
@@ -80,6 +81,10 @@ public class SurfacePanel {
 
 	}
 
+	
+	/**
+	 * do Ney - LEI DA POTENCIA
+	 * */
 	public JPanel drawCustom(String at1, String at2, int res, double smooth, boolean log) {
 		Mapping map = new Mapping();
 		HashMap<String, double[]> hash;
@@ -131,145 +136,6 @@ public class SurfacePanel {
 		ImageIO.write(HM.screenshot(), "png", output);
 		JOptionPane.showMessageDialog(null, "Successfully saved");
 	}
-	// Choks
-/*	public JPanel drawGaussian(String at1, String at2, int res, double sigma,
-			boolean log) {
-
-		Mapping map = new Mapping();
-		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
-		Smooth sp = new Smooth();
-
-		double[][] matrix = sp.gaussian(res, hash, sigma, log);
-		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		JPanel sswp = new JPanel();
-		sswp.setLayout(new BorderLayout());
-		sswp.add(HM);
-		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-		return sswp;
-	}
-
-	public JPanel drawCustom(String at1, String at2, int res, double smooth,
-			boolean log) {
-
-		Mapping map = new Mapping();
-		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
-		Smooth sp = new Smooth();
-
-		double[][] matrix = sp.custom(res, hash, smooth, log);
-		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		JPanel sswp = new JPanel();
-
-		sswp.setLayout(new BorderLayout());
-		sswp.add(HM);
-		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-
-		return sswp;
-	}
-
-	
-
-	
-	//mudar para catmull
-	public JPanel drawCatmullClark(String at1, String at2, int res, double smooth,
-			boolean log) {
-		int sm = (int) smooth; // numero de vezes que a subdivisao sera
-								// realizada
-		Mapping map = new Mapping();
-
-		HashMap<String, double[]> hash = map.getCompleteHash(at1, log);
-
-		// para cada celula da malha rodar todo o hash e avaliar quais pontos
-		// estao dentro dela e tirar a media
-		// aproveitar para gerar mesh 3D ou mesh[][][] e fazer a subdivisao
-		float[][][] mps = new float[res][res][3]; // mps = malhaParaSubdividir
-		for (int i = 0; i < res; i++) {
-			for (int j = 0; j < res; j++) {
-				int sum = 1;
-				for (double[] coord : hash.values()) {
-					// em x
-					if (coord[0] > (i * 1.0 / res) && coord[0] < (i * 1.0 / res + 1.0 / res)
-					&&  coord[1] > (j * 1.0 / res) && coord[1] < (j * 1.0 / res + 1.0 / res)){
-						
-						mps[i][j][0]=mps[i][j][0]+(float) coord[2];
-						sum++;
-					}		
-				}
-				mps[i][j][0]=(float) (i * 1.0 / res);
-				mps[i][j][1]=(float) (j * 1.0 / res);
-				if (sum>1){mps[i][j][0]=mps[i][j][0]/(sum-1);}
-				
-
-			}	
-		}
-		CCSurface ccsurf = new CCSurface();
-		float[][][] mesh = ccsurf.divideCC(mps, sm);
-		double[][] matrix = convertDoubleMesh(mesh);
-		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
-		HM.setDrawLegend(true);
-
-		HeatMapPanel HMD = null;
-		try {
-			HMD = new HeatMapPanel(HM);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		JPanel sswp = new JPanel();
-
-		sswp.setLayout(new BorderLayout());
-		sswp.add(HM);
-		sswp.add(HMD.testJPanel(), BorderLayout.SOUTH);
-
-		return sswp;
-		
-
-		
-	}
-
-	//mesh nao esta vindo normalizada, nao sei porque
-	
-	private double[][] convertDoubleMesh(float[][][] omesh) {
-		
-		float[][][] mesh = Util.normalizeFloat(omesh);
-		
-		int res=mesh.length;
-		double[][] nmesh = new double[res+1][res+1];
-		for (int i = 0; i < res; i++) {
-			for (int j = 0; j < res; j++) {
-				int iX = (int) (mesh[i][j][0]*res);
-				double diY=(mesh[i][j][1]*res);
-				int iY = (int) (mesh[i][j][1]*res);
-				nmesh[iX][iY] = mesh[i][j][2];
-				
-			}
-		}
-		
-		
-		
-		return nmesh;
-	}
-*/
 	
 	
 	
@@ -303,11 +169,9 @@ public class SurfacePanel {
 
 		//aplicar o flanagran
 		
-		SurfaceSmooth smoothness = new SurfaceSmooth(matrix);
+		SurfSmooth smoothness = new SurfSmooth(matrix);
 		matrix = smoothness.movingAverage((int) smooth);
 		
-		
-	//	matrix = Util.normalizeDouble(matrix);
 		
 		
 		HM = new HeatMap(matrix, true, Gradient.GRADIENT_RAINBOW2);
